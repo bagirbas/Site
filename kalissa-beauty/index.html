@@ -215,7 +215,7 @@ function flowSheet(){
   if(slots.length) h+=`<div class="slots">`+slots.map(x=>`<div class="slot ${f.time===x.t?'sel':''}" onclick="UI.flow.time='${x.t}';flowSheet()">${x.t}</div>`).join('')+`</div>`;
   else h+=altBlock(f);
   if(slots.length||f.time){
-    const pay=cr?`1 seans hakkın kullanılır · kalan ${cr}`:'Tek seans olarak ödenir (salonda)';
+    const pay=cr?`1 seans hakkın kullanılır · kalan ${cr}`:(s.online&&f.mode==='Online'?'Tek seans · uygulamadan ödenir':'Tek seans olarak ödenir (salonda)');
     h+=`<div class="card" style="margin-top:16px;padding:6px 14px"><div class="kv"><span class="mut">Ödeme</span><b style="font-size:13px;text-align:right">${pay}</b></div><div class="kv"><span class="mut">İptal</span><b style="font-size:13px">24 saat öncesine kadar ücretsiz</b></div></div>`;
     h+=`<button class="btn block acc" style="margin-top:14px" ${f.time?'':'disabled'} onclick="confirmFlow()">${f.time?fmtD(f.day)+' · '+f.time+' onayla':'Bir saat seç'}</button>`;
     if(!cr) h+=`<button class="btn block ghost" style="margin-top:8px" onclick="closeSheet();go('packages')">Paket alıp avantajlı devam et</button>`;
