@@ -13,7 +13,6 @@
   --boks:#ff7a59;--fonk:#c8f560;--pilates:#b79cff;--ems:#4fd1ff;--grup:#ffc65c;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
 body{font-family:-apple-system,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#000;color:var(--txt);display:flex;justify-content:center}
 #app{width:100%;max-width:440px;min-height:100vh;background:var(--bg);position:relative;padding-bottom:84px}
 .demo{font-size:11px;text-align:center;color:var(--mut);padding:6px 10px;background:#0a0b0c}
@@ -97,6 +96,9 @@ h2 a{font-size:13px;color:var(--acc);text-decoration:none;font-weight:600;cursor
 .stat small{color:var(--mut);font-size:11.5px}
 .mode{background:#2a2310;border:1px solid #4a3d16;color:var(--warn);font-size:12px;font-weight:700;text-align:center;padding:8px;margin:0 20px 10px;border-radius:12px}
 select{background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;width:100%}
+html.embed,html.embed body{height:100%;overflow:hidden}
+html.embed #app{height:100%;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+html.embed .tabbar{position:fixed}
 </style>
 </head>
 <body>
@@ -106,7 +108,8 @@ select{background:var(--card2);color:var(--txt);border:1px solid var(--line);bor
 <div class="toast" id="toast"></div>
 
 <script>
-const EMBED=/embed/.test(location.search);
+const EMBED=/embed/.test(location.search);if(EMBED)document.documentElement.classList.add('embed');
+function toTop(){window.scrollTo(0,0);const a=document.getElementById('app');if(a)a.scrollTop=0}
 /* ------------------ VERİ (örnek) ------------------ */
 const BR = {
   boks:{n:'Boks',c:'var(--boks)'}, fonk:{n:'Fonksiyonel',c:'var(--fonk)'},
@@ -205,7 +208,7 @@ function render(){
   a.innerHTML=h+tabbar();
   save();
 }
-function go(t){UI.tab=t;if(t!=='trainers')UI.trainer=null;window.scrollTo(0,0);render()}
+function go(t){UI.tab=t;if(t!=='trainers')UI.trainer=null;toTop();render()}
 
 function tabbar(){
   if(UI.role==='coach') return `<nav class="tabbar"><div class="tab on"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Takvimim</div><div class="tab" onclick="setRole('uye')"><svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>Üye Moduna Dön</div></nav>`;
@@ -310,7 +313,7 @@ function trainers(){
     const n=Object.values(S.slots[t.id][iso(TODAY)]||{}).filter(v=>v==='open').length+Object.values(S.slots[t.id][iso(addDays(TODAY,1))]||{}).filter(v=>v==='open').length;
     return `<div class="card trainer" onclick="openTrainer('${t.id}')"><div class="tav" style="background:${t.col}">${t.ini}</div><div style="flex:1"><b>${t.name}</b><div class="mut" style="font-size:13px;margin-top:2px">${t.br.map(b=>BR[b].n).join(' · ')}</div><span class="tag ok">${n} açık saat · bugün/yarın</span></div><span class="mut">›</span></div>`}).join('')+'</div>';
 }
-function openTrainer(id,day){UI.trainer=id;UI.tDay=day||iso(TODAY);UI.selSlot=null;UI.tab='trainers';UI.pType=null;window.scrollTo(0,0);render()}
+function openTrainer(id,day){UI.trainer=id;UI.tDay=day||iso(TODAY);UI.selSlot=null;UI.tab='trainers';UI.pType=null;toTop();render()}
 function trainerDetail(){
   const t=T(UI.trainer), slots=S.slots[t.id][UI.tDay]||{};
   const types=t.br.filter(b=>b!=='grup'); if(!UI.pType) UI.pType=types[0]||'fonk';
@@ -362,7 +365,7 @@ function profile(){
   return h;
 }
 function resetDemo(){try{localStorage.removeItem('kf_state')}catch(e){}location.reload()}
-function setRole(r){UI.role=r;window.scrollTo(0,0);render()}
+function setRole(r){UI.role=r;toTop();render()}
 
 /* ---- Eğitmen modu ---- */
 function coachView(){

@@ -85,6 +85,9 @@ h2 a{font-size:13px;color:var(--acc);font-weight:600;cursor:pointer}
 .opt{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;background:var(--card);border:1px solid var(--line);margin-bottom:8px;cursor:pointer}
 .opt.on{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc) inset}
 select{background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;width:100%}
+html.embed,html.embed body{height:100%;overflow:hidden}
+html.embed #app{height:100%;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+html.embed .tabbar{position:fixed}
 </style>
 </head>
 <body>
@@ -93,7 +96,8 @@ select{background:var(--card);color:var(--txt);border:1px solid var(--line);bord
 <div class="sheet" id="sheet"></div>
 <div class="toast" id="toast"></div>
 <script>
-const EMBED=/embed/.test(location.search);
+const EMBED=/embed/.test(location.search);if(EMBED)document.documentElement.classList.add('embed');
+function toTop(){window.scrollTo(0,0);const a=document.getElementById('app');if(a)a.scrollTop=0}
 /* ---------------- VERİ (örnek) ---------------- */
 const SV = {
   nail:   {n:'Nail Art',        i:'💅',dur:60,c:'var(--nail)',   res:'staff', d:'Kalıcı oje, jel ve nail art tasarımları.'},
@@ -175,7 +179,7 @@ function render(){
   h+= UI.role==='panel' ? panel() : ({home,services,pros,packages,profile})[UI.tab]();
   $('#app').innerHTML=h+tabbar(); save();
 }
-function go(t){UI.tab=t;UI.proView=null;window.scrollTo(0,0);render()}
+function go(t){UI.tab=t;UI.proView=null;toTop();render()}
 function tabbar(){
   if(UI.role==='panel')return `<nav class="tabbar"><div class="tab on"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Takvim</div><div class="tab" onclick="UI.role='musteri';render()"><svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>Müşteri Moduna Dön</div></nav>`;
   const I={home:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',services:'<path d="M12 3c2 3 5 4.5 5 8a5 5 0 0 1-10 0c0-3.5 3-5 5-8z"/><path d="M12 21v-5"/>',pros:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',packages:'<rect x="3" y="8" width="18" height="13" rx="3"/><path d="M12 8v13M3 13h18M12 8c-2-4-6-4-6-1.5S10 8 12 8zm0 0c2-4 6-4 6-1.5S14 8 12 8z"/>',profile:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>'};
@@ -289,7 +293,7 @@ function profile(){
   if(UI.seg==='wait')h+=S.waits.length?S.waits.map(w=>{const[sv,pro,day]=w.key.split('|');return `<div class="alt"><div><b style="font-size:14px">${SV[sv].i} ${SV[sv].n}</b><div class="mut" style="font-size:12px">${fmtD(day)} · ${pro==='any'?'Herhangi bir uzman':P(pro).name}</div></div><span class="tag wait">Bekliyor</span></div>`}).join(''):'<div class="card empty">Bekleme listesinde bir şey yok.</div>';
   else{const l=UI.seg==='up'?up:ps;h+=l.length?l.map(apptItem).join(''):'<div class="card empty">Burada henüz bir şey yok.</div>'}
   h+=`</div><h2>Ayarlar</h2><div class="wrap"><div class="card" style="padding:6px 14px"><div class="kv"><span>Randevu hatırlatıcısı</span><b class="mut">1 gün + 2 saat önce</b></div><div class="kv"><span>Bekleme listesi bildirimi</span><b style="color:var(--ok)">Açık</b></div><div class="kv"><span>İptal kuralı</span><b class="mut">24 saat</b></div><div class="kv"><span>Cilt / sağlık notlarım</span><b class="mut">Ekle ›</b></div></div>
-  <div class="card" style="margin-top:12px"><b>Uzman & cihaz paneli</b><p class="mut" style="font-size:13px;margin:6px 0 12px">Uzmanların saat açtığı, günlük randevularını gördüğü ekran.</p><button class="btn sm" onclick="UI.role='panel';window.scrollTo(0,0);render()">Panele geç</button></div>
+  <div class="card" style="margin-top:12px"><b>Uzman & cihaz paneli</b><p class="mut" style="font-size:13px;margin:6px 0 12px">Uzmanların saat açtığı, günlük randevularını gördüğü ekran.</p><button class="btn sm" onclick="UI.role='panel';toTop();render()">Panele geç</button></div>
   <button class="btn block ghost" style="margin-top:12px" onclick="try{localStorage.removeItem('kb_state')}catch(e){};location.reload()">Demo verisini sıfırla</button></div>`;
   return h;
 }
