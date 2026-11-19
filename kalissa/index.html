@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1113">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Kalissa Fit · Uygulama Prototipi</title>
+<style>
+:root{
+  --bg:#0f1113;--card:#1a1d21;--card2:#22262b;--line:#2c3137;--txt:#f2f3f1;--mut:#9aa1a9;
+  --acc:#c8f560;--acc-ink:#15190a;--danger:#ff6b6b;--warn:#ffc65c;
+  --boks:#ff7a59;--fonk:#c8f560;--pilates:#b79cff;--ems:#4fd1ff;--grup:#ffc65c;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:-apple-system,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#000;color:var(--txt);display:flex;justify-content:center}
+#app{width:100%;max-width:440px;min-height:100vh;background:var(--bg);position:relative;padding-bottom:84px}
+.demo{font-size:11px;text-align:center;color:var(--mut);padding:6px 10px;background:#0a0b0c}
+header.top{padding:18px 20px 8px;display:flex;justify-content:space-between;align-items:center}
+.brand{font-weight:800;letter-spacing:.14em;font-size:15px}
+.brand span{color:var(--acc)}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--card2);display:grid;place-items:center;font-weight:700;font-size:13px;border:1px solid var(--line)}
+h1{font-size:26px;letter-spacing:-.02em;padding:6px 20px 14px}
+h2{font-size:17px;padding:18px 20px 10px;display:flex;justify-content:space-between;align-items:baseline}
+h2 a{font-size:13px;color:var(--acc);text-decoration:none;font-weight:600;cursor:pointer}
+.mut{color:var(--mut)}
+.wrap{padding:0 20px}
+.card{background:var(--card);border-radius:18px;padding:16px;border:1px solid var(--line)}
+.hero{background:linear-gradient(135deg,#1f2a12,#1a1d21 60%);border-color:#34421c}
+.row{display:flex;align-items:center;gap:12px}
+.between{justify-content:space-between}
+.btn{appearance:none;border:0;border-radius:999px;padding:12px 18px;font-weight:700;font-size:14px;cursor:pointer;background:var(--acc);color:var(--acc-ink)}
+.btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
+.btn.dark{background:var(--card2);color:var(--txt)}
+.btn.danger{background:transparent;color:var(--danger);border:1px solid #4a2626}
+.btn.sm{padding:8px 14px;font-size:13px}
+.btn.block{width:100%;padding:15px}
+.btn:disabled{opacity:.4;cursor:default}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:0 20px 4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:8px 14px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-size:13px;font-weight:600;cursor:pointer;color:var(--mut)}
+.chip.on{background:var(--txt);color:#000;border-color:var(--txt)}
+.days{display:flex;gap:8px;overflow-x:auto;padding:4px 20px 12px;scrollbar-width:none}
+.days::-webkit-scrollbar{display:none}
+.day{flex:none;width:52px;padding:10px 0;border-radius:16px;text-align:center;background:var(--card);border:1px solid var(--line);cursor:pointer}
+.day b{display:block;font-size:18px;margin-top:2px}
+.day small{font-size:11px;color:var(--mut);text-transform:uppercase}
+.day.on{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.day.on small{color:var(--acc-ink)}
+.cls{display:flex;gap:14px;padding:14px;border-radius:18px;background:var(--card);border:1px solid var(--line);margin-bottom:10px;cursor:pointer}
+.cls .time{width:54px;flex:none}
+.cls .time b{font-size:17px;display:block}
+.cls .time small{color:var(--mut);font-size:12px}
+.cls .bar{width:4px;border-radius:4px;flex:none}
+.cls .info{flex:1;min-width:0}
+.cls .info b{display:block;font-size:15px;margin-bottom:3px}
+.cls .info small{color:var(--mut);font-size:12.5px}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--card2);margin-top:6px}
+.tag.ok{color:var(--acc)}.tag.few{color:var(--warn)}.tag.full{color:var(--danger)}.tag.mine{background:var(--acc);color:var(--acc-ink)}.tag.wait{background:#3a3220;color:var(--warn)}
+.cap{height:4px;background:var(--card2);border-radius:4px;margin-top:8px;overflow:hidden}
+.cap i{display:block;height:100%;background:var(--mut)}
+.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;background:rgba(15,17,19,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;padding:8px 6px calc(10px + env(safe-area-inset-bottom));z-index:20}
+.tab{flex:1;text-align:center;font-size:11px;color:var(--mut);cursor:pointer;padding:4px 0}
+.tab svg{width:24px;height:24px;display:block;margin:0 auto 3px;stroke:currentColor;fill:none;stroke-width:1.8}
+.tab.on{color:var(--acc)}
+.pkg{margin-bottom:12px}
+.pkg .price{font-size:22px;font-weight:800}
+.meter{height:8px;background:var(--card2);border-radius:8px;overflow:hidden;margin:10px 0 6px}
+.meter i{display:block;height:100%;background:var(--acc)}
+.trainer{display:flex;gap:14px;align-items:center;padding:14px;margin-bottom:10px;cursor:pointer}
+.tav{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-weight:800;font-size:17px;color:#000;flex:none}
+.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.slot{padding:11px 0;text-align:center;border-radius:12px;background:var(--card2);font-weight:700;font-size:14px;cursor:pointer;border:1px solid transparent}
+.slot.sel{background:var(--acc);color:var(--acc-ink)}
+.slot.taken{opacity:.3;text-decoration:line-through;cursor:default}
+.slot.closed{background:transparent;border:1px dashed var(--line);color:var(--mut);font-weight:500}
+.slot.open{border-color:#3d4d1e;color:var(--acc)}
+.slot.booked{background:#2a2f36;color:var(--mut)}
+.sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:40;display:none}
+.sheet{position:fixed;left:50%;bottom:0;transform:translate(-50%,100%);width:100%;max-width:440px;background:#15181b;border-radius:24px 24px 0 0;padding:10px 20px calc(24px + env(safe-area-inset-bottom));z-index:50;transition:transform .25s ease;max-height:88vh;overflow-y:auto;border-top:1px solid var(--line)}
+.sheet.show{transform:translate(-50%,0)}
+.grab{width:40px;height:5px;border-radius:5px;background:var(--line);margin:0 auto 14px}
+.sheet h3{font-size:21px;margin-bottom:4px}
+.kv{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}
+.kv:last-child{border:0}
+.toast{position:fixed;top:16px;left:50%;transform:translate(-50%,-140%);background:var(--txt);color:#000;padding:12px 18px;border-radius:14px;font-weight:600;font-size:14px;z-index:60;transition:transform .25s;max-width:90%;text-align:center}
+.toast.show{transform:translate(-50%,0)}
+.alt{padding:12px;border-radius:14px;background:var(--card);border:1px solid var(--line);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.empty{padding:28px 20px;text-align:center;color:var(--mut);font-size:14px}
+.seg{display:flex;background:var(--card);border-radius:999px;padding:4px;margin:0 20px 14px;border:1px solid var(--line)}
+.seg div{flex:1;text-align:center;padding:9px 0;border-radius:999px;font-size:13px;font-weight:700;color:var(--mut);cursor:pointer}
+.seg div.on{background:var(--card2);color:var(--txt)}
+.note{font-size:12px;color:var(--mut);padding:10px 20px}
+.stat{flex:1;text-align:center;padding:12px 6px}
+.stat b{display:block;font-size:22px}
+.stat small{color:var(--mut);font-size:11.5px}
+.mode{background:#2a2310;border:1px solid #4a3d16;color:var(--warn);font-size:12px;font-weight:700;text-align:center;padding:8px;margin:0 20px 10px;border-radius:12px}
+select{background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;width:100%}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="sheet-bg" id="sheetBg" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ------------------ VERİ (örnek) ------------------ */
+const BR = {
+  boks:{n:'Boks',c:'var(--boks)'}, fonk:{n:'Fonksiyonel',c:'var(--fonk)'},
+  pilates:{n:'Pilates',c:'var(--pilates)'}, ems:{n:'EMS',c:'var(--ems)'}, grup:{n:'Grup Dersi',c:'var(--grup)'}
+};
+const TRAINERS = [
+  {id:'t1',name:'Deniz Aksoy',ini:'DA',br:['boks','fonk'],col:'#ff7a59',bio:'Boks ve kondisyon. Teknik + kardiyo odaklı dersler.'},
+  {id:'t2',name:'Ece Tunalı',ini:'ET',br:['pilates'],col:'#b79cff',bio:'Reformer ve mat pilates. Duruş ve core çalışmaları.'},
+  {id:'t3',name:'Mert Yalın',ini:'MY',br:['ems','fonk'],col:'#4fd1ff',bio:'EMS ve fonksiyonel antrenman. 20 dakikada tam vücut.'},
+  {id:'t4',name:'Selin Kaya',ini:'SK',br:['grup','pilates'],col:'#ffc65c',bio:'Grup dersleri: core, mobilite, HIIT.'}
+];
+// Haftalık grup dersi şablonu (0=Pazar). [saat, branş, başlık, eğitmen, kontenjan, dk]
+const WEEK = {
+ 1:[['07:45','fonk','Sabah Fonksiyonel','t3',10,50],['12:30','pilates','Mat Pilates','t2',8,50],['18:30','boks','Grup Boks','t1',10,60],['19:45','grup','Core & Stretch','t4',12,45]],
+ 2:[['08:00','pilates','Mat Pilates','t2',8,50],['18:00','fonk','Fonksiyonel HIIT','t3',10,45],['19:15','grup','Total Body','t4',12,50],['20:30','boks','Boks Teknik','t1',8,60]],
+ 3:[['07:45','fonk','Sabah Fonksiyonel','t3',10,50],['12:30','grup','Öğle Core','t4',12,40],['18:30','boks','Grup Boks','t1',10,60],['19:45','pilates','Mat Pilates','t2',8,50]],
+ 4:[['08:00','pilates','Mat Pilates','t2',8,50],['18:00','fonk','Fonksiyonel HIIT','t3',10,45],['19:15','boks','Kickbox Kondisyon','t1',10,50],['20:30','grup','Mobilite & Esneme','t4',12,45]],
+ 5:[['07:45','fonk','Sabah Fonksiyonel','t3',10,50],['18:00','grup','Cuma Total Body','t4',12,50],['19:15','boks','Grup Boks','t1',10,60]],
+ 6:[['09:30','grup','Hafta Sonu HIIT','t4',14,50],['11:00','pilates','Mat Pilates','t2',8,50],['12:30','boks','Boks Teknik','t1',8,60]],
+ 0:[['10:00','fonk','Pazar Fonksiyonel','t3',10,50],['11:30','pilates','Mat Pilates','t2',8,50]]
+};
+const PACKAGES = [
+  {id:'p1',type:'grup',name:'Grup 8',desc:'8 grup dersi · Boks, Fonksiyonel, Pilates, Grup',credits:8,days:45,price:'₺ —'},
+  {id:'p2',type:'grup',name:'Grup 16',desc:'16 grup dersi · tüm grup dersleri',credits:16,days:75,price:'₺ —'},
+  {id:'p3',type:'ems',name:'EMS 8',desc:'8 seans EMS · 20 dk, birebir eğitmen',credits:8,days:60,price:'₺ —'},
+  {id:'p4',type:'ozel',name:'Özel Ders 10',desc:'10 birebir ders · Pilates, Boks veya Fonksiyonel',credits:10,days:90,price:'₺ —'},
+  {id:'p5',type:'grup',name:'Deneme Dersi',desc:'1 grup dersi · ilk kez gelenler için',credits:1,days:14,price:'₺ —'}
+];
+const TYPE_N = {grup:'Grup Dersi Kredisi',ems:'EMS Kredisi',ozel:'Özel Ders Kredisi'};
+const OPEN_H = d => (d===0||d===6) ? [8,16] : [7.5,22]; // Google'daki çalışma saatleri
+
+/* ------------------ DURUM ------------------ */
+const pad = n => String(n).padStart(2,'0');
+const iso = d => d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+const addDays = (d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const DN = ['Paz','Pzt','Sal','Çar','Per','Cum','Cmt'];
+const DNL = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+const MN = ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
+const fmtD = s => {const d=new Date(s+'T00:00');return d.getDate()+' '+MN[d.getMonth()]+' '+DNL[d.getDay()]};
+
+function seedRand(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))|0;return ()=>{h=(h*1103515245+12345)|0;return ((h>>>16)&0x7fff)/0x7fff}}
+
+function buildClasses(){
+  const out=[];
+  for(let i=0;i<14;i++){
+    const d=addDays(TODAY,i), k=iso(d);
+    (WEEK[d.getDay()]||[]).forEach(([t,br,title,tr,cap,dur],j)=>{
+      const r=seedRand(k+t+br); let booked=Math.floor(r()*(cap+1));
+      if(i<3 && j===2) booked=cap; // birkaç dolu ders: alternatif akışını göstermek için
+      out.push({id:k+'_'+t,date:k,time:t,br,title,tr,cap,dur,booked,wait:booked>=cap?Math.floor(r()*3):0});
+    });
+  }
+  return out;
+}
+function buildSlots(){
+  const s={};
+  TRAINERS.forEach(t=>{s[t.id]={};for(let i=0;i<14;i++){const d=addDays(TODAY,i),k=iso(d),[a,b]=OPEN_H(d.getDay());const r=seedRand(t.id+k);
+    s[t.id][k]={};for(let h=Math.ceil(a);h<b;h++){const v=r();s[t.id][k][pad(h)+':00']= v<.45?'open':(v<.6?'booked':'closed')}}});
+  return s;
+}
+const store={get(k){try{return JSON.parse(localStorage.getItem('kf_'+k))}catch(e){return null}},set(k,v){try{localStorage.setItem('kf_'+k,JSON.stringify(v))}catch(e){}}};
+
+let S = store.get('state');
+if(!S || S.v!==2 || S.today!==iso(TODAY)){
+  S={v:2,today:iso(TODAY),classes:buildClasses(),slots:buildSlots(),
+     wallet:[{id:'w1',type:'grup',name:'Grup 16',total:16,used:5,exp:iso(addDays(TODAY,48))},{id:'w2',type:'ems',name:'EMS 8',total:8,used:6,exp:iso(addDays(TODAY,20))}],
+     bookings:[],waits:[],user:{name:'Burak'}};
+  const c=S.classes.find(c=>c.date===iso(addDays(TODAY,1))&&c.booked<c.cap);
+  if(c){c.booked++;S.bookings.push({id:'b0',kind:'group',ref:c.id,date:c.date,time:c.time,br:c.br,title:c.title,tr:c.tr})}
+}
+let UI={tab:'home',day:iso(TODAY),filter:'all',trainer:null,tDay:iso(TODAY),selSlot:null,bookSeg:'up',role:'uye',coach:'t1',cDay:iso(TODAY)};
+const save=()=>store.set('state',S);
+
+/* ------------------ YARDIMCI ------------------ */
+const $=s=>document.querySelector(s);
+const T=id=>TRAINERS.find(t=>t.id===id);
+const credit=type=>S.wallet.filter(w=>w.type===type&&w.used<w.total).reduce((a,w)=>a+(w.total-w.used),0);
+function useCredit(type){const w=S.wallet.filter(w=>w.type===type&&w.used<w.total).sort((a,b)=>a.exp.localeCompare(b.exp))[0];if(!w)return null;w.used++;return w.id}
+function refund(wid){const w=S.wallet.find(w=>w.id===wid);if(w&&w.used>0)w.used--}
+const creditType = (kind,br)=> kind==='group'?'grup':(br==='ems'?'ems':'ozel');
+function hoursUntil(date,time){return (new Date(date+'T'+time)-new Date())/36e5}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2400)}
+function openSheet(html){$('#sheet').innerHTML='<div class="grab"></div>'+html;$('#sheetBg').style.display='block';requestAnimationFrame(()=>$('#sheet').classList.add('show'))}
+function closeSheet(){$('#sheet').classList.remove('show');setTimeout(()=>$('#sheetBg').style.display='none',200)}
+const myBooking=cid=>S.bookings.find(b=>b.ref===cid);
+const onWait=cid=>S.waits.includes(cid);
+const isPast=(date,time)=>hoursUntil(date,time)<0;
+
+/* ------------------ EKRANLAR ------------------ */
+function render(){
+  const a=$('#app');
+  let h='<div class="demo">Kalissa Fit için hazırlanmış uygulama prototipidir · örnek veri</div>';
+  h+=`<header class="top"><div class="brand">KALISSA<span>FIT</span></div><div class="avatar" onclick="go('profile')">${S.user.name[0]}</div></header>`;
+  if(UI.role==='coach') h+=coachView(); else h+=({home,classes,trainers,packages,profile})[UI.tab]();
+  a.innerHTML=h+tabbar();
+  save();
+}
+function go(t){UI.tab=t;if(t!=='trainers')UI.trainer=null;window.scrollTo(0,0);render()}
+
+function tabbar(){
+  if(UI.role==='coach') return `<nav class="tabbar"><div class="tab on"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Takvimim</div><div class="tab" onclick="setRole('uye')"><svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>Üye Moduna Dön</div></nav>`;
+  const I={home:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',classes:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',trainers:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17 14c2.4 0 4 1.6 4.6 4.5"/>',packages:'<rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18"/>',profile:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>'};
+  const L={home:'Ana Sayfa',classes:'Dersler',trainers:'Eğitmenler',packages:'Paketler',profile:'Profil'};
+  return '<nav class="tabbar">'+Object.keys(L).map(k=>`<div class="tab ${UI.tab===k?'on':''}" onclick="go('${k}')"><svg viewBox="0 0 24 24">${I[k]}</svg>${L[k]}</div>`).join('')+'</nav>';
+}
+
+function home(){
+  const up=S.bookings.filter(b=>!isPast(b.date,b.time)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  const next=up[0];
+  const g=credit('grup'),e=credit('ems'),o=credit('ozel');
+  let h=`<h1>Merhaba ${S.user.name} 👋</h1><div class="wrap">`;
+  if(next){h+=`<div class="card hero"><small class="mut">Sıradaki dersin</small><div class="row between" style="margin-top:8px"><div><b style="font-size:20px">${next.title}</b><div class="mut" style="font-size:13px;margin-top:4px">${fmtD(next.date)} · ${next.time} · ${T(next.tr).name}</div></div><span class="tag" style="background:${BR[next.br].c};color:#000">${BR[next.br].n}</span></div><div class="row" style="margin-top:14px;gap:8px"><button class="btn sm" onclick="openBooking('${next.id}')">Detay</button><button class="btn sm ghost" onclick="cancelBooking('${next.id}')">İptal et</button></div></div>`}
+  else h+=`<div class="card hero"><b style="font-size:18px">Bu hafta henüz dersin yok</b><p class="mut" style="font-size:13px;margin:6px 0 14px">Grup derslerine katıl ya da eğitmeninden birebir saat al.</p><button class="btn sm" onclick="go('classes')">Ders programı</button></div>`;
+  h+=`</div><h2>Kredilerim <a onclick="go('packages')">Paket al</a></h2><div class="wrap"><div class="card row" style="padding:4px">
+    <div class="stat"><b>${g}</b><small>Grup</small></div><div class="stat" style="border-left:1px solid var(--line);border-right:1px solid var(--line)"><b>${e}</b><small>EMS</small></div><div class="stat"><b>${o}</b><small>Özel ders</small></div></div></div>`;
+  const today=S.classes.filter(c=>c.date===iso(TODAY)&&!isPast(c.date,c.time));
+  h+=`<h2>Bugün stüdyoda <a onclick="go('classes')">Tümü</a></h2><div class="wrap">`;
+  h+= today.length? today.map(clsCard).join('') : `<div class="card empty">Bugün için kalan grup dersi yok.<br><a style="color:var(--acc);cursor:pointer" onclick="UI.day='${iso(addDays(TODAY,1))}';go('classes')">Yarının programına bak →</a></div>`;
+  h+=`</div><h2>Birebir saat al</h2><div class="chips">`+TRAINERS.map(t=>`<div class="chip" onclick="openTrainer('${t.id}')">${t.name.split(' ')[0]} · ${t.br.map(b=>BR[b].n).join('/')}</div>`).join('')+'</div>';
+  return h;
+}
+
+function clsCard(c){
+  const mine=myBooking(c.id), full=c.booked>=c.cap, left=c.cap-c.booked, past=isPast(c.date,c.time);
+  let tag = mine?'<span class="tag mine">Kayıtlısın ✓</span>': onWait(c.id)?'<span class="tag wait">Bekleme listesindesin</span>': full?'<span class="tag full">Dolu · alternatif var</span>': left<=2?`<span class="tag few">Son ${left} yer</span>`:`<span class="tag ok">${left} yer var</span>`;
+  if(past) tag='<span class="tag">Tamamlandı</span>';
+  return `<div class="cls" onclick="openClass('${c.id}')" style="${past?'opacity:.45':''}"><div class="time"><b>${c.time}</b><small>${c.dur} dk</small></div><div class="bar" style="background:${BR[c.br].c}"></div><div class="info"><b>${c.title}</b><small>${BR[c.br].n} · ${T(c.tr).name}</small><div>${tag}</div><div class="cap"><i style="width:${Math.min(100,c.booked/c.cap*100)}%;background:${BR[c.br].c}"></i></div></div></div>`;
+}
+
+function classes(){
+  let h=`<h1>Ders Programı</h1><div class="days">`;
+  for(let i=0;i<14;i++){const d=addDays(TODAY,i),k=iso(d);h+=`<div class="day ${UI.day===k?'on':''}" onclick="UI.day='${k}';render()"><small>${i===0?'Bugün':DN[d.getDay()]}</small><b>${d.getDate()}</b></div>`}
+  h+=`</div><div class="chips"><div class="chip ${UI.filter==='all'?'on':''}" onclick="UI.filter='all';render()">Tümü</div>`+['boks','fonk','pilates','grup','ems'].map(b=>`<div class="chip ${UI.filter===b?'on':''}" onclick="UI.filter='${b}';render()">${BR[b].n}</div>`).join('')+`</div><div class="wrap" style="margin-top:14px">`;
+  if(UI.filter==='ems'){
+    h+=`<div class="card"><b>EMS birebir yapılır</b><p class="mut" style="font-size:13px;margin:6px 0 12px">EMS seansları için eğitmenin açtığı saatlerden birini seç. 20 dakikalık seans, 1 EMS kredisi.</p>`+TRAINERS.filter(t=>t.br.includes('ems')).map(t=>`<button class="btn sm" onclick="openTrainer('${t.id}')">${t.name} takvimi →</button>`).join(' ')+'</div>';
+    return h+'</div>';
+  }
+  const list=S.classes.filter(c=>c.date===UI.day&&(UI.filter==='all'||c.br===UI.filter));
+  h+= list.length? list.map(clsCard).join('') : `<div class="card empty">Bu gün için ${UI.filter==='all'?'':BR[UI.filter].n+' '}grup dersi yok.<br>Eğitmenlerden birebir saat alabilirsin.</div>`;
+  const [a,b]=OPEN_H(new Date(UI.day+'T00:00').getDay());
+  h+=`</div><div class="note">Stüdyo saatleri bu gün: ${a===7.5?'07:30':pad(a)+':00'} – ${pad(b)}:00 · Ders başlangıcından 12 saat öncesine kadar ücretsiz iptal.</div>`;
+  return h;
+}
+
+function openClass(id){
+  const c=S.classes.find(x=>x.id===id), t=T(c.tr), mine=myBooking(id), full=c.booked>=c.cap, past=isPast(c.date,c.time);
+  let h=`<span class="tag" style="background:${BR[c.br].c};color:#000;margin:0 0 8px">${BR[c.br].n}</span><h3>${c.title}</h3><p class="mut" style="font-size:14px">${fmtD(c.date)} · ${c.time} · ${c.dur} dk</p>
+  <div class="card" style="margin:16px 0;padding:6px 14px"><div class="kv"><span class="mut">Eğitmen</span><b>${t.name}</b></div><div class="kv"><span class="mut">Kontenjan</span><b>${c.booked}/${c.cap}${c.wait?` · ${c.wait} kişi beklemede`:''}</b></div><div class="kv"><span class="mut">Kullanılacak</span><b>1 Grup Dersi Kredisi</b></div><div class="kv"><span class="mut">Kalan kredin</span><b>${credit('grup')}</b></div></div>`;
+  if(past) h+=`<button class="btn block dark" disabled>Bu ders tamamlandı</button>`;
+  else if(mine) h+=`<button class="btn block danger" onclick="cancelBooking('${mine.id}')">Rezervasyonu iptal et</button>`;
+  else if(full){
+    h+= onWait(id)? `<button class="btn block dark" onclick="leaveWait('${id}')">Bekleme listesinden çık</button>` : `<button class="btn block" onclick="joinWait('${id}')">Bekleme listesine gir</button><p class="mut" style="font-size:12px;margin:8px 2px 0">Yer açılırsa otomatik kaydolursun ve bildirim gelir. Kredi yalnızca kayıt olunca düşer.</p>`;
+    h+=altHTML(c);
+  } else h+= credit('grup')>0? `<button class="btn block" onclick="bookClass('${id}')">Derse katıl</button>` : `<button class="btn block" onclick="closeSheet();go('packages')">Kredin yok · Paket al</button>`;
+  openSheet(h);
+}
+function altHTML(c){
+  const later=S.classes.filter(x=>x.id!==c.id&&x.br===c.br&&x.booked<x.cap&&!isPast(x.date,x.time)&&!myBooking(x.id)).slice(0,3);
+  const same=S.classes.filter(x=>x.date===c.date&&x.id!==c.id&&x.booked<x.cap&&!isPast(x.date,x.time)&&!myBooking(x.id)).slice(0,2);
+  const coach=TRAINERS.find(t=>t.id===c.tr), free=Object.entries(S.slots[coach.id][c.date]||{}).filter(([h,v])=>v==='open'&&!isPast(c.date,h)).slice(0,1);
+  let h=`<h2 style="padding:22px 0 10px">Alternatifler</h2>`;
+  later.forEach(x=>h+=`<div class="alt"><div><b style="font-size:14px">${x.title}</b><div class="mut" style="font-size:12px">${fmtD(x.date)} · ${x.time} · ${x.cap-x.booked} yer</div></div><button class="btn sm" onclick="bookClass('${x.id}')">Katıl</button></div>`);
+  same.forEach(x=>h+=`<div class="alt"><div><b style="font-size:14px">${x.title} <span class="mut" style="font-weight:500">· aynı gün</span></b><div class="mut" style="font-size:12px">${x.time} · ${BR[x.br].n} · ${x.cap-x.booked} yer</div></div><button class="btn sm" onclick="bookClass('${x.id}')">Katıl</button></div>`);
+  if(free.length) h+=`<div class="alt"><div><b style="font-size:14px">${coach.name} ile birebir</b><div class="mut" style="font-size:12px">${fmtD(c.date)} · ${free[0][0]} · 1 Özel Ders Kredisi</div></div><button class="btn sm" onclick="closeSheet();openTrainer('${coach.id}','${c.date}')">Gör</button></div>`;
+  if(!later.length&&!same.length&&!free.length) h+=`<div class="mut" style="font-size:13px">Şu an uygun alternatif yok, bekleme listesi en iyi seçenek.</div>`;
+  return h;
+}
+function bookClass(id){
+  const c=S.classes.find(x=>x.id===id);
+  if(c.booked>=c.cap) return toast('Bu ders doldu');
+  const clash=S.bookings.find(b=>b.date===c.date&&b.time===c.time); if(clash) return toast('Aynı saatte başka bir rezervasyonun var');
+  const w=useCredit('grup'); if(!w){closeSheet();go('packages');return toast('Grup kredin kalmadı')}
+  c.booked++; S.waits=S.waits.filter(x=>x!==id);
+  S.bookings.push({id:'b'+Date.now(),kind:'group',ref:id,date:c.date,time:c.time,br:c.br,title:c.title,tr:c.tr,wid:w});
+  closeSheet(); render(); toast('Kaydın alındı ✓ '+fmtD(c.date)+' '+c.time);
+}
+function joinWait(id){S.waits.push(id);const c=S.classes.find(x=>x.id===id);c.wait++;closeSheet();render();toast('Bekleme listesine eklendin · sıran: '+c.wait)}
+function leaveWait(id){S.waits=S.waits.filter(x=>x!==id);const c=S.classes.find(x=>x.id===id);c.wait=Math.max(0,c.wait-1);closeSheet();render();toast('Bekleme listesinden çıktın')}
+
+function cancelBooking(bid){
+  const b=S.bookings.find(x=>x.id===bid); const hrs=hoursUntil(b.date,b.time), free=hrs>=12;
+  openSheet(`<h3>Rezervasyonu iptal et?</h3><p class="mut" style="font-size:14px;margin:6px 0 16px">${b.title} · ${fmtD(b.date)} ${b.time}</p>
+  <div class="card" style="margin-bottom:16px;${free?'':'border-color:#4a2626'}"><b style="color:${free?'var(--acc)':'var(--danger)'}">${free?'Ücretsiz iptal':'Geç iptal'}</b><p class="mut" style="font-size:13px;margin-top:4px">${free?'Dersin başlamasına 12 saatten fazla var, kredin hesabına geri yüklenecek.':'Derse 12 saatten az kaldı, iptal edersen kredin yanar. Bekleme listesindeki kişiye yer açılır.'}</p></div>
+  <button class="btn block danger" onclick="doCancel('${bid}',${free})">Evet, iptal et</button><button class="btn block ghost" style="margin-top:10px" onclick="closeSheet()">Vazgeç</button>`);
+}
+function doCancel(bid,free){
+  const b=S.bookings.find(x=>x.id===bid);
+  if(b.kind==='group'){const c=S.classes.find(x=>x.id===b.ref);if(c){c.booked--; if(c.wait>0){c.wait--;c.booked++}}}
+  else {S.slots[b.tr][b.date][b.time]='open'}
+  if(free&&b.wid) refund(b.wid);
+  S.bookings=S.bookings.filter(x=>x.id!==bid); closeSheet(); render(); toast(free?'İptal edildi · kredin iade edildi':'İptal edildi');
+}
+function openBooking(bid){const b=S.bookings.find(x=>x.id===bid); if(b.kind==='group') openClass(b.ref); else openSheet(`<span class="tag" style="background:${BR[b.br].c};color:#000;margin:0 0 8px">${BR[b.br].n} · Birebir</span><h3>${b.title}</h3><p class="mut" style="font-size:14px;margin-bottom:16px">${fmtD(b.date)} · ${b.time} · ${T(b.tr).name}</p><button class="btn block danger" onclick="cancelBooking('${b.id}')">Rezervasyonu iptal et</button>`)}
+
+/* ---- Eğitmenler ---- */
+function trainers(){
+  if(UI.trainer) return trainerDetail();
+  return `<h1>Eğitmenler</h1><div class="wrap">`+TRAINERS.map(t=>{
+    const n=Object.values(S.slots[t.id][iso(TODAY)]||{}).filter(v=>v==='open').length+Object.values(S.slots[t.id][iso(addDays(TODAY,1))]||{}).filter(v=>v==='open').length;
+    return `<div class="card trainer" onclick="openTrainer('${t.id}')"><div class="tav" style="background:${t.col}">${t.ini}</div><div style="flex:1"><b>${t.name}</b><div class="mut" style="font-size:13px;margin-top:2px">${t.br.map(b=>BR[b].n).join(' · ')}</div><span class="tag ok">${n} açık saat · bugün/yarın</span></div><span class="mut">›</span></div>`}).join('')+'</div>';
+}
+function openTrainer(id,day){UI.trainer=id;UI.tDay=day||iso(TODAY);UI.selSlot=null;UI.tab='trainers';UI.pType=null;window.scrollTo(0,0);render()}
+function trainerDetail(){
+  const t=T(UI.trainer), slots=S.slots[t.id][UI.tDay]||{};
+  const types=t.br.filter(b=>b!=='grup'); if(!UI.pType) UI.pType=types[0]||'fonk';
+  let h=`<div class="wrap" style="padding-top:6px"><a class="mut" style="cursor:pointer;font-size:14px" onclick="UI.trainer=null;render()">‹ Eğitmenler</a></div>
+  <div class="wrap" style="margin-top:12px"><div class="row"><div class="tav" style="background:${t.col};width:64px;height:64px;font-size:20px">${t.ini}</div><div><h1 style="padding:0;font-size:22px">${t.name}</h1><div class="mut" style="font-size:13px">${t.bio}</div></div></div></div>`;
+  h+=`<h2>Ders türü</h2><div class="chips">`+types.map(b=>`<div class="chip ${UI.pType===b?'on':''}" onclick="UI.pType='${b}';render()">${BR[b].n} · birebir</div>`).join('')+`</div>`;
+  h+=`<h2>Tarih</h2><div class="days">`;
+  for(let i=0;i<14;i++){const d=addDays(TODAY,i),k=iso(d),n=Object.entries(S.slots[t.id][k]||{}).filter(([hh,v])=>v==='open'&&!isPast(k,hh)).length;h+=`<div class="day ${UI.tDay===k?'on':''}" onclick="UI.tDay='${k}';UI.selSlot=null;render()"><small>${i===0?'Bugün':DN[d.getDay()]}</small><b>${d.getDate()}</b><small style="font-size:10px">${n?n+' açık':'—'}</small></div>`}
+  const open=Object.entries(slots).filter(([hh,v])=>v!=='closed');
+  h+=`</div><div class="wrap">`;
+  if(!open.length) h+=`<div class="card empty">${t.name.split(' ')[0]} bu gün için saat açmamış.</div>`;
+  else h+=`<div class="slots">`+open.map(([hh,v])=>{const p=isPast(UI.tDay,hh);const cls=(v==='booked'||p)?'taken':(UI.selSlot===hh?'sel':'');return `<div class="slot ${cls}" onclick="${(v==='booked'||p)?'':`UI.selSlot='${hh}';render()`}">${hh}</div>`}).join('')+'</div>';
+  const ct=UI.pType==='ems'?'ems':'ozel';
+  h+=`<div class="card" style="margin-top:16px;padding:6px 14px"><div class="kv"><span class="mut">Süre</span><b>${UI.pType==='ems'?'20 dk':'50 dk'}</b></div><div class="kv"><span class="mut">Kullanılacak</span><b>1 ${TYPE_N[ct]}</b></div><div class="kv"><span class="mut">Kalan</span><b>${credit(ct)}</b></div></div>`;
+  h+= credit(ct)>0 ? `<button class="btn block" style="margin-top:14px" ${UI.selSlot?'':'disabled'} onclick="bookPrivate()">${UI.selSlot?fmtD(UI.tDay)+' · '+UI.selSlot+' rezerve et':'Bir saat seç'}</button>` : `<button class="btn block" style="margin-top:14px" onclick="go('packages')">${TYPE_N[ct]} yok · Paket al</button>`;
+  return h+`</div><div class="note">Eğitmenler müsait saatlerini kendi panellerinden açar; burada yalnızca açık saatler görünür.</div>`;
+}
+function bookPrivate(){
+  const t=T(UI.trainer), ct=UI.pType==='ems'?'ems':'ozel';
+  if(S.bookings.find(b=>b.date===UI.tDay&&b.time===UI.selSlot)) return toast('Aynı saatte başka bir rezervasyonun var');
+  const w=useCredit(ct); if(!w) return toast('Kredin yok');
+  S.slots[t.id][UI.tDay][UI.selSlot]='booked';
+  S.bookings.push({id:'b'+Date.now(),kind:'private',date:UI.tDay,time:UI.selSlot,br:UI.pType,title:BR[UI.pType].n+' · Birebir',tr:t.id,wid:w});
+  const msg='Rezervasyon tamam ✓ '+fmtD(UI.tDay)+' '+UI.selSlot; UI.selSlot=null; render(); toast(msg);
+}
+
+/* ---- Paketler ---- */
+function packages(){
+  let h=`<h1>Paketler</h1><h2 style="padding-top:0">Aktif paketlerim</h2><div class="wrap">`;
+  const act=S.wallet.filter(w=>w.used<w.total);
+  h+= act.length? act.map(w=>`<div class="card pkg"><div class="row between"><b>${w.name}</b><span class="tag">${TYPE_N[w.type]}</span></div><div class="meter"><i style="width:${(w.total-w.used)/w.total*100}%"></i></div><div class="row between mut" style="font-size:12.5px"><span>${w.total-w.used}/${w.total} ders kaldı</span><span>Son gün: ${fmtD(w.exp)}</span></div></div>`).join('') : `<div class="card empty">Aktif paketin yok.</div>`;
+  h+=`</div><h2>Satın al</h2><div class="wrap">`+PACKAGES.map(p=>`<div class="card pkg"><div class="row between"><div><b style="font-size:16px">${p.name}</b><div class="mut" style="font-size:13px;margin-top:3px">${p.desc}</div><div class="mut" style="font-size:12px;margin-top:3px">Geçerlilik: ${p.days} gün</div></div><div style="text-align:right"><div class="price">${p.price}</div></div></div><button class="btn sm" style="margin-top:12px" onclick="buyPkg('${p.id}')">Satın al</button></div>`).join('')+`</div><div class="note">Fiyatlar stüdyo tarafından girilecek. Ödeme adımı prototipte simüle edilir.</div>`;
+  return h;
+}
+function buyPkg(id){const p=PACKAGES.find(x=>x.id===id);openSheet(`<h3>${p.name}</h3><p class="mut" style="font-size:14px;margin:6px 0 16px">${p.desc}</p><div class="card" style="padding:6px 14px;margin-bottom:16px"><div class="kv"><span class="mut">Kredi</span><b>${p.credits} · ${TYPE_N[p.type]}</b></div><div class="kv"><span class="mut">Geçerlilik</span><b>${p.days} gün</b></div><div class="kv"><span class="mut">Tutar</span><b>${p.price}</b></div></div><button class="btn block" onclick="confirmBuy('${id}')">Ödemeye geç (demo)</button>`)}
+function confirmBuy(id){const p=PACKAGES.find(x=>x.id===id);S.wallet.push({id:'w'+Date.now(),type:p.type,name:p.name,total:p.credits,used:0,exp:iso(addDays(TODAY,p.days))});closeSheet();render();toast(p.name+' hesabına eklendi ✓')}
+
+/* ---- Profil ---- */
+function profile(){
+  const up=S.bookings.filter(b=>!isPast(b.date,b.time)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  const past=S.bookings.filter(b=>isPast(b.date,b.time));
+  let h=`<h1>Profil</h1><div class="seg"><div class="${UI.bookSeg==='up'?'on':''}" onclick="UI.bookSeg='up';render()">Yaklaşan (${up.length})</div><div class="${UI.bookSeg==='wait'?'on':''}" onclick="UI.bookSeg='wait';render()">Bekleme (${S.waits.length})</div><div class="${UI.bookSeg==='past'?'on':''}" onclick="UI.bookSeg='past';render()">Geçmiş</div></div><div class="wrap">`;
+  const list=UI.bookSeg==='up'?up:UI.bookSeg==='past'?past:[];
+  if(UI.bookSeg==='wait') h+= S.waits.length? S.waits.map(id=>clsCard(S.classes.find(c=>c.id===id))).join(''):'<div class="card empty">Bekleme listesinde dersin yok.</div>';
+  else h+= list.length? list.map(b=>`<div class="cls" onclick="openBooking('${b.id}')"><div class="time"><b>${b.time}</b><small>${fmtD(b.date).split(' ').slice(0,2).join(' ')}</small></div><div class="bar" style="background:${BR[b.br].c}"></div><div class="info"><b>${b.title}</b><small>${T(b.tr).name} · ${b.kind==='group'?'Grup':'Birebir'}</small></div></div>`).join('') : '<div class="card empty">Burada henüz bir şey yok.</div>';
+  h+=`</div><h2>Ayarlar</h2><div class="wrap"><div class="card" style="padding:6px 14px"><div class="kv"><span>Ders hatırlatıcısı</span><b class="mut">2 saat önce</b></div><div class="kv"><span>Bekleme listesi bildirimi</span><b style="color:var(--acc)">Açık</b></div><div class="kv"><span>İptal kuralı</span><b class="mut">12 saat</b></div></div>
+  <div class="card" style="margin-top:12px"><b>Eğitmen paneli</b><p class="mut" style="font-size:13px;margin:6px 0 12px">Eğitmenlerin saat açtığı ve katılımcıları gördüğü ekranı dene.</p><button class="btn sm dark" onclick="setRole('coach')">Eğitmen moduna geç</button></div>
+  <button class="btn block ghost" style="margin-top:12px" onclick="resetDemo()">Demo verisini sıfırla</button></div>`;
+  return h;
+}
+function resetDemo(){try{localStorage.removeItem('kf_state')}catch(e){}location.reload()}
+function setRole(r){UI.role=r;window.scrollTo(0,0);render()}
+
+/* ---- Eğitmen modu ---- */
+function coachView(){
+  const t=T(UI.coach), day=UI.cDay, slots=S.slots[t.id][day]||{}, d=new Date(day+'T00:00'), [a,b]=OPEN_H(d.getDay());
+  let h=`<div class="mode">EĞİTMEN MODU · ${t.name}</div><div class="wrap"><select onchange="UI.coach=this.value;render()">`+TRAINERS.map(x=>`<option value="${x.id}" ${x.id===t.id?'selected':''}>${x.name}</option>`).join('')+`</select></div><h1 style="padding-top:14px">Takvimim</h1><div class="days">`;
+  for(let i=0;i<14;i++){const dd=addDays(TODAY,i),k=iso(dd),n=Object.values(S.slots[t.id][k]||{}).filter(v=>v==='booked').length;h+=`<div class="day ${day===k?'on':''}" onclick="UI.cDay='${k}';render()"><small>${i===0?'Bugün':DN[dd.getDay()]}</small><b>${dd.getDate()}</b><small style="font-size:10px">${n?n+' ders':'—'}</small></div>`}
+  const grp=S.classes.filter(c=>c.date===day&&c.tr===t.id);
+  h+=`</div><h2 style="padding-top:4px">Grup derslerim</h2><div class="wrap">`+(grp.length?grp.map(c=>`<div class="alt"><div><b style="font-size:14px">${c.time} · ${c.title}</b><div class="mut" style="font-size:12px">${c.booked}/${c.cap} katılımcı${c.wait?` · ${c.wait} beklemede`:''}</div></div><span class="tag" style="background:${BR[c.br].c};color:#000">${BR[c.br].n}</span></div>`).join(''):'<div class="mut" style="font-size:13px">Bu gün grup dersin yok.</div>')+`</div>`;
+  h+=`<h2>Birebir saatlerim <a onclick="openAll('${day}')">Tümünü aç</a></h2><div class="wrap"><div class="slots">`;
+  for(let x=Math.ceil(a);x<b;x++){const hh=pad(x)+':00',v=slots[hh]||'closed';h+=`<div class="slot ${v}" onclick="toggleSlot('${hh}')">${hh}<div style="font-size:10px;font-weight:500;margin-top:2px">${v==='open'?'Açık':v==='booked'?'Dolu':'Kapalı'}</div></div>`}
+  h+=`</div><p class="mut" style="font-size:12px;margin-top:12px">Saate dokunarak aç/kapat. Dolu saatlere dokununca katılımcı bilgisi görünür. Açtığın saatler üyelerin uygulamasında anında görünür.</p></div>`;
+  return h;
+}
+function toggleSlot(hh){
+  const s=S.slots[UI.coach][UI.cDay]; const v=s[hh]||'closed';
+  if(v==='booked'){const b=S.bookings.find(b=>b.tr===UI.coach&&b.date===UI.cDay&&b.time===hh);return openSheet(`<h3>${hh} · Dolu</h3><p class="mut" style="font-size:14px;margin:6px 0 16px">${b?S.user.name+' · '+b.title:'Üye · Birebir ders'}</p><button class="btn block ghost" onclick="closeSheet()">Tamam</button>`)}
+  s[hh]= v==='open'?'closed':'open'; render(); toast(hh+(s[hh]==='open'?' açıldı':' kapatıldı'));
+}
+function openAll(day){const s=S.slots[UI.coach][day];Object.keys(s).forEach(k=>{if(s[k]==='closed')s[k]='open'});const [a,b]=OPEN_H(new Date(day+'T00:00').getDay());for(let x=Math.ceil(a);x<b;x++){const k=pad(x)+':00';if(!s[k])s[k]='open'}render();toast('Günün tüm boş saatleri açıldı')}
+
+render();
+</script>
+</body>
+</html>
