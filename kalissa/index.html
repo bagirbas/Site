@@ -96,9 +96,14 @@ h2 a{font-size:13px;color:var(--acc);text-decoration:none;font-weight:600;cursor
 .stat small{color:var(--mut);font-size:11.5px}
 .mode{background:#2a2310;border:1px solid #4a3d16;color:var(--warn);font-size:12px;font-weight:700;text-align:center;padding:8px;margin:0 20px 10px;border-radius:12px}
 select{background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;width:100%}
-html.embed,html.embed body{height:100%;overflow:hidden}
-html.embed #app{height:100%;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
-html.embed .tabbar{position:fixed}
+
+.kswitch{padding:10px 16px 4px}
+.kpill{position:relative;display:flex;border-radius:999px;padding:4px}
+.kpill .opt{position:relative;z-index:1;flex:1;text-align:center;padding:10px 0;font-weight:800;font-size:13px;letter-spacing:.06em;cursor:pointer;user-select:none;border:0;background:transparent}
+.kpill .opt small{display:block;font-size:9.5px;font-weight:600;letter-spacing:.14em;opacity:.75;margin-top:1px;font-family:-apple-system,Segoe UI,sans-serif}
+.kpill .o-beauty{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:.02em;font-size:15px}
+.kpill .opt.cur{border-radius:999px}
+.kpill{background:#1a1d21;border:1px solid #2c3137}.kpill .o-fit{background:#c8f560;color:#15190a}.kpill .o-beauty{color:#9aa1a9}
 </style>
 </head>
 <body>
@@ -108,7 +113,10 @@ html.embed .tabbar{position:fixed}
 <div class="toast" id="toast"></div>
 
 <script>
-const EMBED=/embed/.test(location.search);if(EMBED)document.documentElement.classList.add('embed');
+const SIDE='fit';
+const COMBINED=/combined/.test(location.search);
+function goSide(k){if(k===SIDE)return;try{sessionStorage.setItem('ui_'+SIDE,JSON.stringify(UI));localStorage.setItem('kalissa_side',k)}catch(e){};location.href=(k==='fit'?'../kalissa/':'../kalissa-beauty/')+'?combined=1'}
+const EMBED=COMBINED;
 function toTop(){window.scrollTo(0,0);const a=document.getElementById('app');if(a)a.scrollTop=0}
 /* ------------------ VERİ (örnek) ------------------ */
 const BR = {
@@ -182,6 +190,7 @@ if(!S || S.v!==2 || S.today!==iso(TODAY)){
   if(c){c.booked++;S.bookings.push({id:'b0',kind:'group',ref:c.id,date:c.date,time:c.time,br:c.br,title:c.title,tr:c.tr})}
 }
 let UI={tab:'home',day:iso(TODAY),filter:'all',trainer:null,tDay:iso(TODAY),selSlot:null,bookSeg:'up',role:'uye',coach:'t1',cDay:iso(TODAY)};
+if(COMBINED){try{const u=JSON.parse(sessionStorage.getItem('ui_'+SIDE));if(u){Object.assign(UI,u);UI.flow=null}}catch(e){}}
 const save=()=>store.set('state',S);
 
 /* ------------------ YARDIMCI ------------------ */
@@ -202,7 +211,7 @@ const isPast=(date,time)=>hoursUntil(date,time)<0;
 /* ------------------ EKRANLAR ------------------ */
 function render(){
   const a=$('#app');
-  let h=EMBED?'':'<div class="demo">Kalissa Fit için hazırlanmış uygulama prototipidir · örnek veri</div>';
+  let h=COMBINED?`<div class="demo">Kalissa için hazırlanmış uygulama prototipidir · örnek veri</div><div class="kswitch"><div class="kpill"><div class="opt o-fit ${SIDE==='fit'?'cur':''}" onclick="goSide('fit')">KALISSA FIT<small>DERSLER · EMS</small></div><div class="opt o-beauty ${SIDE==='beauty'?'cur':''}" onclick="goSide('beauty')">Beauty & Wellness<small>BAKIM · DİYETİSYEN</small></div></div></div>`:'<div class="demo">Kalissa Fit için hazırlanmış uygulama prototipidir · örnek veri</div>';
   h+=`<header class="top"><div class="brand">KALISSA<span>FIT</span></div><div class="avatar" onclick="go('profile')">${S.user.name[0]}</div></header>`;
   if(UI.role==='coach') h+=coachView(); else h+=({home,classes,trainers,packages,profile})[UI.tab]();
   a.innerHTML=h+tabbar();
@@ -229,7 +238,7 @@ function home(){
   const today=S.classes.filter(c=>c.date===iso(TODAY)&&!isPast(c.date,c.time));
   h+=`<h2>Bugün stüdyoda <a onclick="go('classes')">Tümü</a></h2><div class="wrap">`;
   h+= today.length? today.map(clsCard).join('') : `<div class="card empty">Bugün için kalan grup dersi yok.<br><a style="color:var(--acc);cursor:pointer" onclick="UI.day='${iso(addDays(TODAY,1))}';go('classes')">Yarının programına bak →</a></div>`;
-  if(EMBED) h+=`</div><h2>Antrenman sonrası</h2><div class="wrap"><div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:pointer;background:linear-gradient(135deg,#2a2420,#3a2c25);border-color:#4a382e" onclick="parent.switchTo&&parent.switchTo('beauty')"><div><b>Ozon Sauna · Selülit Masajı</b><div class="mut" style="font-size:12.5px;margin-top:3px">Aynı binada, Kalissa Beauty & Wellness'ta</div></div><span class="btn sm" style="background:#e9d3c2;color:#2a2420">Randevu →</span></div>`;
+  if(EMBED) h+=`</div><h2>Antrenman sonrası</h2><div class="wrap"><div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:pointer;background:linear-gradient(135deg,#2a2420,#3a2c25);border-color:#4a382e" onclick="goSide('beauty')"><div><b>Ozon Sauna · Selülit Masajı</b><div class="mut" style="font-size:12.5px;margin-top:3px">Aynı binada, Kalissa Beauty & Wellness'ta</div></div><span class="btn sm" style="background:#e9d3c2;color:#2a2420">Randevu →</span></div>`;
   h+=`</div><h2>Birebir saat al</h2><div class="chips">`+TRAINERS.map(t=>`<div class="chip" onclick="openTrainer('${t.id}')">${t.name.split(' ')[0]} · ${t.br.map(b=>BR[b].n).join('/')}</div>`).join('')+'</div>';
   return h;
 }

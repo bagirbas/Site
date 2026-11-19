@@ -85,9 +85,14 @@ h2 a{font-size:13px;color:var(--acc);font-weight:600;cursor:pointer}
 .opt{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;background:var(--card);border:1px solid var(--line);margin-bottom:8px;cursor:pointer}
 .opt.on{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc) inset}
 select{background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;width:100%}
-html.embed,html.embed body{height:100%;overflow:hidden}
-html.embed #app{height:100%;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
-html.embed .tabbar{position:fixed}
+
+.kswitch{padding:10px 16px 4px}
+.kpill{position:relative;display:flex;border-radius:999px;padding:4px}
+.kpill .opt{position:relative;z-index:1;flex:1;text-align:center;padding:10px 0;font-weight:800;font-size:13px;letter-spacing:.06em;cursor:pointer;user-select:none;border:0;background:transparent}
+.kpill .opt small{display:block;font-size:9.5px;font-weight:600;letter-spacing:.14em;opacity:.75;margin-top:1px;font-family:-apple-system,Segoe UI,sans-serif}
+.kpill .o-beauty{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:.02em;font-size:15px}
+.kpill .opt.cur{border-radius:999px}
+.kpill{background:#efe7dc;border:1px solid #e4d9cb}.kpill .o-beauty{background:#2a2420;color:#f6f1ea}.kpill .o-fit{color:#8a7d71}
 </style>
 </head>
 <body>
@@ -96,7 +101,10 @@ html.embed .tabbar{position:fixed}
 <div class="sheet" id="sheet"></div>
 <div class="toast" id="toast"></div>
 <script>
-const EMBED=/embed/.test(location.search);if(EMBED)document.documentElement.classList.add('embed');
+const SIDE='beauty';
+const COMBINED=/combined/.test(location.search);
+function goSide(k){if(k===SIDE)return;try{sessionStorage.setItem('ui_'+SIDE,JSON.stringify(UI));localStorage.setItem('kalissa_side',k)}catch(e){};location.href=(k==='fit'?'../kalissa/':'../kalissa-beauty/')+'?combined=1'}
+const EMBED=COMBINED;
 function toTop(){window.scrollTo(0,0);const a=document.getElementById('app');if(a)a.scrollTop=0}
 /* ---------------- VERİ (örnek) ---------------- */
 const SV = {
@@ -155,6 +163,7 @@ if(!S||S.v!==2||S.today!==iso(TODAY)){
 }
 function nextOpenDay(){for(let i=1;i<21;i++){const k=iso(addDays(TODAY,i));if(HOURS(dow(k)))return k}}
 let UI={tab:'home',role:'musteri',flow:null,proView:null,pDay:iso(TODAY),seg:'up',panelPro:'p1',panelDay:iso(TODAY)};
+if(COMBINED){try{const u=JSON.parse(sessionStorage.getItem('ui_'+SIDE));if(u){Object.assign(UI,u);UI.flow=null}}catch(e){}}
 const save=()=>store.set('state',S);
 
 /* ---------------- YARDIMCI ---------------- */
@@ -174,7 +183,7 @@ const clash=(d,t)=>S.appts.find(a=>a.date===d&&a.time===t);
 
 /* ---------------- RENDER ---------------- */
 function render(){
-  let h=EMBED?'':'<div class="demo">Kalissa Beauty & Wellness için hazırlanmış uygulama prototipidir · örnek veri</div>';
+  let h=COMBINED?`<div class="demo">Kalissa için hazırlanmış uygulama prototipidir · örnek veri</div><div class="kswitch"><div class="kpill"><div class="opt o-fit ${SIDE==='fit'?'cur':''}" onclick="goSide('fit')">KALISSA FIT<small>DERSLER · EMS</small></div><div class="opt o-beauty ${SIDE==='beauty'?'cur':''}" onclick="goSide('beauty')">Beauty & Wellness<small>BAKIM · DİYETİSYEN</small></div></div></div>`:'<div class="demo">Kalissa Beauty & Wellness için hazırlanmış uygulama prototipidir · örnek veri</div>';
   h+=`<header class="top"><div class="brand">Kalissa<small>BEAUTY & WELLNESS</small></div><div class="avatar" onclick="go('profile')">${S.user.name[0]}</div></header>`;
   h+= UI.role==='panel' ? panel() : ({home,services,pros,packages,profile})[UI.tab]();
   $('#app').innerHTML=h+tabbar(); save();
@@ -198,7 +207,7 @@ function home(){
   if(act.length){h+=`</div><h2>Seans haklarım <a onclick="go('packages')">Tümü</a></h2><div class="wrap">`+act.map(w=>`<div class="card" style="margin-bottom:10px;padding:14px"><div class="row between"><b style="font-size:14px">${SV[w.sv].i} ${w.name}</b><span class="mut" style="font-size:12.5px">${w.total-w.used}/${w.total}</span></div><div class="meter"><i style="width:${(w.total-w.used)/w.total*100}%"></i></div><div class="row between"><small class="mut">Son gün ${fmtD(w.exp)}</small><a style="font-size:13px;font-weight:700;color:var(--acc);cursor:pointer" onclick="startFlow('${w.sv}')">Randevu al</a></div></div>`).join('')}
   h+=`</div><h2>Beslenme danışmanlığı</h2><div class="wrap"><div class="card" style="display:flex;gap:14px;align-items:center"><div class="pav" style="background:#8fa35a">TA</div><div style="flex:1"><b>Tansu Akyurt</b><div class="mut" style="font-size:12.5px;margin-top:2px">Diyetisyen · yüz yüze veya online</div><div class="row" style="gap:8px;margin-top:10px"><button class="btn sm acc" onclick="startFlow('diyet')">İlk görüşme</button><button class="btn sm ghost" onclick="startFlow('diyetk')">Kontrol</button></div></div></div><p class="note" style="padding:8px 2px 0">Vücut şekillendirme seanslarını (Emslim, Vacuo Active) beslenme programıyla birlikte planlayabilirsin.</p>`;
   h+=`</div><h2>Hızlı randevu</h2><div class="wrap"><div class="svc-grid">`+Object.keys(SV).slice(0,4).map(svcTile).join('')+`</div></div>`;
-  if(EMBED) h+=`<h2>Hareketle tamamla</h2><div class="wrap"><div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:pointer;background:#16191c;border-color:#16191c;color:#f2f3f1" onclick="parent.switchTo&&parent.switchTo('fit')"><div><b>EMS · Pilates · Fonksiyonel</b><div style="font-size:12.5px;margin-top:3px;color:#9aa1a9">Kalissa Fit ders programına göz at</div></div><span class="btn sm" style="background:#c8f560;color:#15190a">Dersler →</span></div></div>`;
+  if(EMBED) h+=`<h2>Hareketle tamamla</h2><div class="wrap"><div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:pointer;background:#16191c;border-color:#16191c;color:#f2f3f1" onclick="goSide('fit')"><div><b>EMS · Pilates · Fonksiyonel</b><div style="font-size:12.5px;margin-top:3px;color:#9aa1a9">Kalissa Fit ders programına göz at</div></div><span class="btn sm" style="background:#c8f560;color:#15190a">Dersler →</span></div></div>`;
   h+=`<h2>Birlikte iyi gider</h2><div class="wrap">`+COMBOS.map(([a,b,n])=>`<div class="alt" style="cursor:pointer" onclick="startFlow('${a}','${b}')"><div><b style="font-size:14px">${SV[a].i} ${n}</b><div class="mut" style="font-size:12px">Arka arkaya iki seans · ${SV[a].dur+SV[b].dur} dk</div></div><span class="btn sm acc">Planla</span></div>`).join('')+'</div>';
   return h;
 }
