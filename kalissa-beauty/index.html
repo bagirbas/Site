@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6f1ea">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Kalissa Beauty & Wellness · Uygulama Prototipi</title>
+<style>
+:root{
+  --bg:#f6f1ea;--card:#fffdf9;--card2:#efe7dc;--line:#e4d9cb;--txt:#2a2420;--mut:#8a7d71;
+  --acc:#b07a5f;--acc2:#8f5d45;--ink:#fff;--danger:#b4533f;--ok:#5f7f62;--warn:#b98a2c;
+  --nail:#d98fa4;--cilt:#c9a27e;--masaj:#8fa68e;--vacuo:#7f9bb8;--ozon:#9c8fc0;--selulit:#c98a6b;--emslim:#6f8f9c;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#e9e1d6;color:var(--txt);display:flex;justify-content:center}
+#app{width:100%;max-width:440px;min-height:100vh;background:var(--bg);padding-bottom:86px}
+.demo{font-size:11px;text-align:center;color:var(--mut);padding:6px 10px;background:#efe7dc}
+header.top{padding:18px 20px 6px;display:flex;justify-content:space-between;align-items:center}
+.brand{font-family:Georgia,"Times New Roman",serif;font-size:21px;letter-spacing:.04em}
+.brand small{display:block;font-family:-apple-system,Segoe UI,sans-serif;font-size:9.5px;letter-spacing:.32em;color:var(--mut);margin-top:-2px}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--card2);display:grid;place-items:center;font-weight:700;font-size:13px;cursor:pointer}
+h1{font-family:Georgia,serif;font-weight:400;font-size:28px;padding:8px 20px 14px}
+h2{font-size:16px;padding:18px 20px 10px;display:flex;justify-content:space-between;align-items:baseline}
+h2 a{font-size:13px;color:var(--acc);font-weight:600;cursor:pointer}
+.mut{color:var(--mut)}
+.wrap{padding:0 20px}
+.card{background:var(--card);border-radius:20px;padding:16px;border:1px solid var(--line)}
+.hero{background:linear-gradient(135deg,#ead9c8,#f7efe6);border-color:#e0ccb7}
+.row{display:flex;align-items:center;gap:12px}.between{justify-content:space-between}
+.btn{appearance:none;border:0;border-radius:999px;padding:12px 18px;font-weight:700;font-size:14px;cursor:pointer;background:var(--txt);color:var(--bg)}
+.btn.acc{background:var(--acc);color:#fff}
+.btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
+.btn.danger{background:transparent;color:var(--danger);border:1px solid #e6c2b8}
+.btn.sm{padding:8px 14px;font-size:13px}.btn.block{width:100%;padding:15px}
+.btn:disabled{opacity:.35;cursor:default}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:0 20px 4px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:8px 14px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-size:13px;font-weight:600;cursor:pointer;color:var(--mut)}
+.chip.on{background:var(--txt);color:var(--bg);border-color:var(--txt)}
+.days{display:flex;gap:8px;overflow-x:auto;padding:4px 20px 12px;scrollbar-width:none}.days::-webkit-scrollbar{display:none}
+.day{flex:none;width:54px;padding:10px 0;border-radius:18px;text-align:center;background:var(--card);border:1px solid var(--line);cursor:pointer}
+.day b{display:block;font-size:18px;margin-top:2px}.day small{font-size:10.5px;color:var(--mut)}
+.day.on{background:var(--txt);color:var(--bg);border-color:var(--txt)}.day.on small{color:#d8cbbd}
+.day.off{opacity:.4}
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.svc{border-radius:20px;padding:16px 14px;background:var(--card);border:1px solid var(--line);cursor:pointer;min-height:118px;display:flex;flex-direction:column;justify-content:space-between}
+.svc .dot{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;font-size:17px}
+.svc b{font-size:14.5px;display:block;margin-top:10px}.svc small{font-size:12px;color:var(--mut)}
+.item{display:flex;gap:14px;padding:14px;border-radius:20px;background:var(--card);border:1px solid var(--line);margin-bottom:10px;cursor:pointer;align-items:center}
+.item .time{width:58px;flex:none}.item .time b{font-size:17px;display:block}.item .time small{color:var(--mut);font-size:12px}
+.item .bar{width:4px;align-self:stretch;border-radius:4px;flex:none}
+.item .info{flex:1;min-width:0}.item .info b{display:block;font-size:15px;margin-bottom:3px}.item .info small{color:var(--mut);font-size:12.5px}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--card2);margin-top:6px}
+.tag.ok{color:var(--ok)}.tag.wait{background:#f3e6c8;color:var(--warn)}
+.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;background:rgba(246,241,234,.95);backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;padding:8px 6px calc(10px + env(safe-area-inset-bottom));z-index:20}
+.tab{flex:1;text-align:center;font-size:11px;color:var(--mut);cursor:pointer;padding:4px 0}
+.tab svg{width:24px;height:24px;display:block;margin:0 auto 3px;stroke:currentColor;fill:none;stroke-width:1.7}
+.tab.on{color:var(--acc2)}
+.meter{height:7px;background:var(--card2);border-radius:8px;overflow:hidden;margin:10px 0 6px}.meter i{display:block;height:100%;background:var(--acc)}
+.pro{display:flex;gap:14px;align-items:center;padding:14px;margin-bottom:10px;cursor:pointer}
+.pav{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:16px;color:#fff;flex:none}
+.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.slot{padding:11px 0;text-align:center;border-radius:14px;background:var(--card);border:1px solid var(--line);font-weight:700;font-size:14px;cursor:pointer}
+.slot.sel{background:var(--acc);color:#fff;border-color:var(--acc)}
+.slot.taken{opacity:.3;text-decoration:line-through;cursor:default}
+.slot.closed{background:transparent;border:1px dashed var(--line);color:var(--mut);font-weight:500}
+.slot.open{border-color:#c9dcc9;color:var(--ok);background:#f2f7f1}
+.slot.booked{background:var(--card2);color:var(--mut)}
+.sheet-bg{position:fixed;inset:0;background:rgba(42,36,32,.4);z-index:40;display:none}
+.sheet{position:fixed;left:50%;bottom:0;transform:translate(-50%,100%);width:100%;max-width:440px;background:var(--bg);border-radius:26px 26px 0 0;padding:10px 20px calc(24px + env(safe-area-inset-bottom));z-index:50;transition:transform .25s ease;max-height:90vh;overflow-y:auto}
+.sheet.show{transform:translate(-50%,0)}
+.grab{width:40px;height:5px;border-radius:5px;background:var(--line);margin:0 auto 14px}
+.sheet h3{font-family:Georgia,serif;font-weight:400;font-size:24px;margin-bottom:4px}
+.kv{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}.kv:last-child{border:0}
+.toast{position:fixed;top:16px;left:50%;transform:translate(-50%,-140%);background:var(--txt);color:var(--bg);padding:12px 18px;border-radius:14px;font-weight:600;font-size:14px;z-index:60;transition:transform .25s;max-width:90%;text-align:center}
+.toast.show{transform:translate(-50%,0)}
+.alt{padding:12px 14px;border-radius:16px;background:var(--card);border:1px solid var(--line);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.empty{padding:26px 18px;text-align:center;color:var(--mut);font-size:14px}
+.seg{display:flex;background:var(--card2);border-radius:999px;padding:4px;margin:0 20px 14px}
+.seg div{flex:1;text-align:center;padding:9px 0;border-radius:999px;font-size:13px;font-weight:700;color:var(--mut);cursor:pointer}
+.seg div.on{background:var(--card);color:var(--txt)}
+.note{font-size:12px;color:var(--mut);padding:10px 20px}
+.mode{background:#efe2cf;color:var(--acc2);font-size:12px;font-weight:700;text-align:center;padding:8px;margin:0 20px 10px;border-radius:12px}
+.step{font-size:12px;font-weight:700;color:var(--acc);letter-spacing:.06em;text-transform:uppercase;margin:18px 0 10px}
+.opt{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;background:var(--card);border:1px solid var(--line);margin-bottom:8px;cursor:pointer}
+.opt.on{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc) inset}
+select{background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;width:100%}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="sheet-bg" id="sheetBg" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet"></div>
+<div class="toast" id="toast"></div>
+<script>
+/* ---------------- VERİ (örnek) ---------------- */
+const SV = {
+  nail:   {n:'Nail Art',        i:'💅',dur:60,c:'var(--nail)',   res:'staff', d:'Kalıcı oje, jel ve nail art tasarımları.'},
+  cilt:   {n:'Cilt Bakımı',     i:'✨',dur:60,c:'var(--cilt)',   res:'staff', d:'Cilt analizi ile kişiye özel bakım protokolü.'},
+  masaj:  {n:'Masaj',           i:'🌿',dur:50,c:'var(--masaj)',  res:'staff', d:'Rahatlatıcı ve terapötik vücut masajı.'},
+  selulit:{n:'Selülit Masajı',  i:'🤲',dur:45,c:'var(--selulit)',res:'staff', d:'Tüm vücut selülit ve bölgesel sıkılaşma masajı.'},
+  vacuo:  {n:'Vacuo Active',    i:'🌀',dur:30,c:'var(--vacuo)',  res:'device',dev:'Vacuo Active Kabini', d:'Vakum destekli yürüyüş ile bölgesel incelme.'},
+  ozon:   {n:'Ozon Sauna',      i:'♨️',dur:30,c:'var(--ozon)',   res:'device',dev:'Ozon Sauna Kabini', d:'Detoks ve dolaşımı destekleyen ozonlu buhar seansı.'},
+  emslim: {n:'Emslim',          i:'⚡',dur:30,c:'var(--emslim)', res:'device',dev:'Emslim Cihazı', d:'Kas uyarımı ile bölgesel şekillendirme.'}
+};
+const PROS = [
+  {id:'p1',name:'Elif Demir', ini:'ED',col:'#c9a27e',sv:['cilt','selulit'],bio:'Uzman estetisyen · cilt bakımı ve selülit protokolleri'},
+  {id:'p2',name:'Merve Aslan',ini:'MA',col:'#d98fa4',sv:['nail'],bio:'Nail artist · jel, kalıcı oje ve tasarım'},
+  {id:'p3',name:'Zeynep Kır', ini:'ZK',col:'#8fa68e',sv:['masaj','selulit'],bio:'Masaj terapisti · klasik, aromaterapi, selülit'},
+  {id:'d1',name:'Vacuo Active Kabini',ini:'🌀',col:'#7f9bb8',sv:['vacuo'],device:true,bio:'Cihaz takvimi · operatör eşliğinde'},
+  {id:'d2',name:'Ozon Sauna Kabini',ini:'♨️',col:'#9c8fc0',sv:['ozon'],device:true,bio:'Cihaz takvimi · operatör eşliğinde'},
+  {id:'d3',name:'Emslim Cihazı',ini:'⚡',col:'#6f8f9c',sv:['emslim'],device:true,bio:'Cihaz takvimi · operatör eşliğinde'}
+];
+const PKGS = [
+  {id:'k1',sv:'vacuo',  name:'Vacuo Active 10',  n:10,days:60},
+  {id:'k2',sv:'emslim', name:'Emslim 8',         n:8, days:60},
+  {id:'k3',sv:'selulit',name:'Selülit Masajı 8', n:8, days:60},
+  {id:'k4',sv:'ozon',   name:'Ozon Sauna 10',    n:10,days:90},
+  {id:'k5',sv:'cilt',   name:'Cilt Bakımı 4',    n:4, days:120},
+  {id:'k6',sv:'masaj',  name:'Masaj 5',          n:5, days:90},
+  {id:'k7',sv:'nail',   name:'Nail Art 4',       n:4, days:120}
+];
+const COMBOS = [['ozon','vacuo','Ozon Sauna + Vacuo Active'],['emslim','selulit','Emslim + Selülit Masajı']];
+const HOURS = d => d===0 ? null : (d===6 ? [10,19] : [10,20]); // Google'daki saatler, Pazar kapalı
+
+/* ---------------- DURUM ---------------- */
+const pad=n=>String(n).padStart(2,'0');
+const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const TODAY=new Date();TODAY.setHours(0,0,0,0);
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const DN=['Paz','Pzt','Sal','Çar','Per','Cum','Cmt'],DNL=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'],MN=['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
+const fmtD=s=>{const d=new Date(s+'T00:00');return d.getDate()+' '+MN[d.getMonth()]+' '+DNL[d.getDay()]};
+const dow=s=>new Date(s+'T00:00').getDay();
+function rnd(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))|0;return()=>{h=(h*1103515245+12345)|0;return((h>>>16)&0x7fff)/0x7fff}}
+function buildCal(){const cal={};PROS.forEach(p=>{cal[p.id]={};for(let i=0;i<21;i++){const d=addDays(TODAY,i),k=iso(d),H=HOURS(d.getDay());cal[p.id][k]={};if(!H)continue;const r=rnd(p.id+k);
+  for(let h=H[0];h<H[1];h++){const v=r();cal[p.id][k][pad(h)+':00']=p.device?(v<.55?'open':'booked'):(v<.4?'open':(v<.62?'booked':'closed'))}
+  if(i<2&&p.id==='d1'){Object.keys(cal[p.id][k]).forEach(t=>cal[p.id][k][t]='booked')}}});return cal}
+const store={get(k){try{return JSON.parse(localStorage.getItem('kb_'+k))}catch(e){return null}},set(k,v){try{localStorage.setItem('kb_'+k,JSON.stringify(v))}catch(e){}}};
+let S=store.get('state');
+if(!S||S.v!==1||S.today!==iso(TODAY)){
+  S={v:1,today:iso(TODAY),cal:buildCal(),
+     wallet:[{id:'w1',sv:'vacuo',name:'Vacuo Active 10',total:10,used:4,exp:iso(addDays(TODAY,35))},{id:'w2',sv:'selulit',name:'Selülit Masajı 8',total:8,used:3,exp:iso(addDays(TODAY,40))},{id:'w3',sv:'ozon',name:'Ozon Sauna 10',total:10,used:7,exp:iso(addDays(TODAY,22))}],
+     appts:[],waits:[],user:{name:'Burak'}};
+  const k=nextOpenDay(),t=k&&Object.entries(S.cal.p1[k]).find(([h,v])=>v==='open');
+  if(t){S.cal.p1[k][t[0]]='booked';S.appts.push({id:'a0',sv:'cilt',pro:'p1',date:k,time:t[0],wid:null,paid:'Tek seans'})}
+}
+function nextOpenDay(){for(let i=1;i<21;i++){const k=iso(addDays(TODAY,i));if(HOURS(dow(k)))return k}}
+let UI={tab:'home',role:'musteri',flow:null,proView:null,pDay:iso(TODAY),seg:'up',panelPro:'p1',panelDay:iso(TODAY)};
+const save=()=>store.set('state',S);
+
+/* ---------------- YARDIMCI ---------------- */
+const $=s=>document.querySelector(s);
+const P=id=>PROS.find(p=>p.id===id);
+const prosFor=sv=>PROS.filter(p=>p.sv.includes(sv));
+const credit=sv=>S.wallet.filter(w=>w.sv===sv&&w.used<w.total).reduce((a,w)=>a+w.total-w.used,0);
+function useCredit(sv){const w=S.wallet.filter(w=>w.sv===sv&&w.used<w.total).sort((a,b)=>a.exp.localeCompare(b.exp))[0];if(!w)return null;w.used++;return w.id}
+function refund(id){const w=S.wallet.find(w=>w.id===id);if(w&&w.used>0)w.used--}
+const hrsUntil=(d,t)=>(new Date(d+'T'+t)-new Date())/36e5;
+const past=(d,t)=>hrsUntil(d,t)<0;
+function freeSlots(proId,day){return Object.entries((S.cal[proId]||{})[day]||{}).filter(([t,v])=>v==='open'&&!past(day,t)).map(([t])=>t)}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2500)}
+function openSheet(h){$('#sheet').innerHTML='<div class="grab"></div>'+h;$('#sheetBg').style.display='block';requestAnimationFrame(()=>$('#sheet').classList.add('show'))}
+function closeSheet(){$('#sheet').classList.remove('show');setTimeout(()=>$('#sheetBg').style.display='none',200)}
+const clash=(d,t)=>S.appts.find(a=>a.date===d&&a.time===t);
+
+/* ---------------- RENDER ---------------- */
+function render(){
+  let h='<div class="demo">Kalissa Beauty & Wellness için hazırlanmış uygulama prototipidir · örnek veri</div>';
+  h+=`<header class="top"><div class="brand">Kalissa<small>BEAUTY & WELLNESS</small></div><div class="avatar" onclick="go('profile')">${S.user.name[0]}</div></header>`;
+  h+= UI.role==='panel' ? panel() : ({home,services,pros,packages,profile})[UI.tab]();
+  $('#app').innerHTML=h+tabbar(); save();
+}
+function go(t){UI.tab=t;UI.proView=null;window.scrollTo(0,0);render()}
+function tabbar(){
+  if(UI.role==='panel')return `<nav class="tabbar"><div class="tab on"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Takvim</div><div class="tab" onclick="UI.role='musteri';render()"><svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>Müşteri Moduna Dön</div></nav>`;
+  const I={home:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',services:'<path d="M12 3c2 3 5 4.5 5 8a5 5 0 0 1-10 0c0-3.5 3-5 5-8z"/><path d="M12 21v-5"/>',pros:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',packages:'<rect x="3" y="8" width="18" height="13" rx="3"/><path d="M12 8v13M3 13h18M12 8c-2-4-6-4-6-1.5S10 8 12 8zm0 0c2-4 6-4 6-1.5S14 8 12 8z"/>',profile:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>'};
+  const L={home:'Ana Sayfa',services:'Hizmetler',pros:'Takvimler',packages:'Paketler',profile:'Profil'};
+  return '<nav class="tabbar">'+Object.keys(L).map(k=>`<div class="tab ${UI.tab===k?'on':''}" onclick="go('${k}')"><svg viewBox="0 0 24 24">${I[k]}</svg>${L[k]}</div>`).join('')+'</nav>';
+}
+function svcTile(k){const s=SV[k],c=credit(k);return `<div class="svc" onclick="startFlow('${k}')"><div class="dot" style="background:${s.c}22">${s.i}</div><div><b>${s.n}</b><small>${s.dur} dk${c?` · ${c} seans hakkın`:''}</small></div></div>`}
+function apptItem(a){const s=SV[a.sv];return `<div class="item" onclick="openAppt('${a.id}')" style="${past(a.date,a.time)?'opacity:.5':''}"><div class="time"><b>${a.time}</b><small>${fmtD(a.date).split(' ').slice(0,2).join(' ')}</small></div><div class="bar" style="background:${s.c}"></div><div class="info"><b>${s.n}</b><small>${P(a.pro).name} · ${s.dur} dk</small></div><span class="mut">›</span></div>`}
+
+function home(){
+  const up=S.appts.filter(a=>!past(a.date,a.time)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  let h=`<h1>Merhaba ${S.user.name}</h1><div class="wrap">`;
+  if(up[0]){const a=up[0],s=SV[a.sv];h+=`<div class="card hero"><small class="mut">Sıradaki randevun</small><div style="margin-top:8px"><b style="font-size:20px;font-family:Georgia,serif;font-weight:400">${s.i} ${s.n}</b><div class="mut" style="font-size:13px;margin-top:4px">${fmtD(a.date)} · ${a.time} · ${P(a.pro).name}</div></div><div class="row" style="margin-top:14px;gap:8px"><button class="btn sm" onclick="openAppt('${a.id}')">Detay</button><button class="btn sm ghost" onclick="cancelAppt('${a.id}')">İptal / Değiştir</button></div></div>`}
+  else h+=`<div class="card hero"><b style="font-family:Georgia,serif;font-weight:400;font-size:20px">Kendine zaman ayır</b><p class="mut" style="font-size:13px;margin:6px 0 14px">Bir hizmet seç, uygun uzmanı ve saati bulalım.</p><button class="btn sm" onclick="go('services')">Randevu al</button></div>`;
+  const act=S.wallet.filter(w=>w.used<w.total);
+  if(act.length){h+=`</div><h2>Seans haklarım <a onclick="go('packages')">Tümü</a></h2><div class="wrap">`+act.map(w=>`<div class="card" style="margin-bottom:10px;padding:14px"><div class="row between"><b style="font-size:14px">${SV[w.sv].i} ${w.name}</b><span class="mut" style="font-size:12.5px">${w.total-w.used}/${w.total}</span></div><div class="meter"><i style="width:${(w.total-w.used)/w.total*100}%"></i></div><div class="row between"><small class="mut">Son gün ${fmtD(w.exp)}</small><a style="font-size:13px;font-weight:700;color:var(--acc);cursor:pointer" onclick="startFlow('${w.sv}')">Randevu al</a></div></div>`).join('')}
+  h+=`</div><h2>Hızlı randevu</h2><div class="wrap"><div class="svc-grid">`+Object.keys(SV).slice(0,4).map(svcTile).join('')+`</div></div>`;
+  h+=`<h2>Birlikte iyi gider</h2><div class="wrap">`+COMBOS.map(([a,b,n])=>`<div class="alt" style="cursor:pointer" onclick="startFlow('${a}','${b}')"><div><b style="font-size:14px">${SV[a].i} ${n}</b><div class="mut" style="font-size:12px">Arka arkaya iki seans · ${SV[a].dur+SV[b].dur} dk</div></div><span class="btn sm acc">Planla</span></div>`).join('')+'</div>';
+  return h;
+}
+function services(){return `<h1>Hizmetler</h1><div class="wrap"><div class="svc-grid">`+Object.keys(SV).map(svcTile).join('')+`</div></div><div class="note">Vacuo Active, Ozon Sauna ve Emslim cihaz takvimine göre, diğer hizmetler uzman takvimine göre planlanır.</div>`}
+
+/* ---------------- RANDEVU AKIŞI ---------------- */
+function startFlow(sv,then){const ps=prosFor(sv);UI.flow={sv,then:then||null,pro:ps.length===1?ps[0].id:'any',day:firstDayWith(sv,ps.length===1?ps[0].id:'any'),time:null};flowSheet()}
+function slotsFor(sv,pro,day){if(!HOURS(dow(day)))return[];const ids=pro==='any'?prosFor(sv).map(p=>p.id):[pro];const set={};ids.forEach(id=>freeSlots(id,day).forEach(t=>{(set[t]=set[t]||[]).push(id)}));return Object.keys(set).sort().map(t=>({t,ids:set[t]}))}
+function firstDayWith(sv,pro){for(let i=0;i<21;i++){const k=iso(addDays(TODAY,i));if(slotsFor(sv,pro,k).length)return k}return iso(TODAY)}
+function flowSheet(){
+  const f=UI.flow,s=SV[f.sv],ps=prosFor(f.sv),slots=slotsFor(f.sv,f.pro,f.day),cr=credit(f.sv);
+  let h=`<span class="tag" style="background:${s.c};color:#fff;margin:0 0 8px">${s.i} ${s.dur} dk</span><h3>${s.n}</h3><p class="mut" style="font-size:13.5px">${s.d}</p>`;
+  h+=`<div class="step">1 · ${s.res==='device'?'Cihaz':'Uzman'}</div>`;
+  if(ps.length>1) h+=`<div class="opt ${f.pro==='any'?'on':''}" onclick="UI.flow.pro='any';UI.flow.time=null;flowSheet()"><div class="pav" style="background:var(--card2);color:var(--txt);width:40px;height:40px;font-size:14px">★</div><div><b style="font-size:14px">Fark etmez</b><div class="mut" style="font-size:12px">En erken uygun uzman</div></div></div>`;
+  h+=ps.map(p=>`<div class="opt ${f.pro===p.id?'on':''}" onclick="UI.flow.pro='${p.id}';UI.flow.time=null;flowSheet()"><div class="pav" style="background:${p.col};width:40px;height:40px;font-size:${p.device?18:14}px">${p.ini}</div><div><b style="font-size:14px">${p.name}</b><div class="mut" style="font-size:12px">${p.bio}</div></div></div>`).join('');
+  h+=`<div class="step">2 · Gün</div><div class="days" style="padding:0 0 4px;margin:0 -20px;padding-left:20px">`;
+  for(let i=0;i<14;i++){const d=addDays(TODAY,i),k=iso(d),n=slotsFor(f.sv,f.pro,k).length,closed=!HOURS(d.getDay());h+=`<div class="day ${f.day===k?'on':''} ${closed||!n?'off':''}" onclick="UI.flow.day='${k}';UI.flow.time=null;flowSheet()"><small>${i===0?'Bugün':DN[d.getDay()]}</small><b>${d.getDate()}</b><small>${closed?'Kapalı':n?n+' boş':'Dolu'}</small></div>`}
+  h+=`</div><div class="step">3 · Saat</div>`;
+  if(slots.length) h+=`<div class="slots">`+slots.map(x=>`<div class="slot ${f.time===x.t?'sel':''}" onclick="UI.flow.time='${x.t}';flowSheet()">${x.t}</div>`).join('')+`</div>`;
+  else h+=altBlock(f);
+  if(slots.length||f.time){
+    const pay=cr?`1 seans hakkın kullanılır · kalan ${cr}`:'Tek seans olarak ödenir (salonda)';
+    h+=`<div class="card" style="margin-top:16px;padding:6px 14px"><div class="kv"><span class="mut">Ödeme</span><b style="font-size:13px;text-align:right">${pay}</b></div><div class="kv"><span class="mut">İptal</span><b style="font-size:13px">24 saat öncesine kadar ücretsiz</b></div></div>`;
+    h+=`<button class="btn block acc" style="margin-top:14px" ${f.time?'':'disabled'} onclick="confirmFlow()">${f.time?fmtD(f.day)+' · '+f.time+' onayla':'Bir saat seç'}</button>`;
+    if(!cr) h+=`<button class="btn block ghost" style="margin-top:8px" onclick="closeSheet();go('packages')">Paket alıp avantajlı devam et</button>`;
+  }
+  openSheet(h);
+}
+function altBlock(f){
+  const s=SV[f.sv];let h=`<div class="card" style="text-align:center;padding:18px"><b>${HOURS(dow(f.day))?'Bu gün dolu':'Pazar günleri kapalıyız'}</b><p class="mut" style="font-size:13px;margin-top:4px">Sana en yakın seçenekleri bulduk:</p></div><div style="margin-top:10px">`;
+  const near=[];for(let i=0;i<14&&near.length<3;i++){const k=iso(addDays(TODAY,i));if(k===f.day)continue;const sl=slotsFor(f.sv,f.pro,k);if(sl.length)near.push([k,sl[0].t])}
+  near.forEach(([k,t])=>h+=`<div class="alt"><div><b style="font-size:14px">${fmtD(k)}</b><div class="mut" style="font-size:12px">İlk boş saat ${t}</div></div><button class="btn sm acc" onclick="UI.flow.day='${k}';UI.flow.time='${t}';flowSheet()">Seç</button></div>`);
+  if(f.pro!=='any'&&prosFor(f.sv).length>1){const o=prosFor(f.sv).filter(p=>p.id!==f.pro).map(p=>[p,freeSlots(p.id,f.day)]).filter(x=>x[1].length)[0];if(o)h+=`<div class="alt"><div><b style="font-size:14px">${o[0].name} aynı gün müsait</b><div class="mut" style="font-size:12px">${o[1].slice(0,3).join(' · ')}</div></div><button class="btn sm acc" onclick="UI.flow.pro='${o[0].id}';UI.flow.time='${o[1][0]}';flowSheet()">Seç</button></div>`}
+  const k=f.sv+'|'+f.pro+'|'+f.day,on=S.waits.find(w=>w.key===k);
+  if(HOURS(dow(f.day)))h+= on?`<button class="btn block ghost" onclick="leaveWait('${k}')">Bekleme listesinden çık</button>`:`<button class="btn block" onclick="joinWait('${k}')">Bu gün için bekleme listesine gir</button><p class="mut" style="font-size:12px;margin:8px 2px 0">Bir iptal olursa ilk sana bildirim gelir, 30 dk içinde onaylarsan randevu senin.</p>`;
+  return h+'</div>';
+}
+function confirmFlow(){
+  const f=UI.flow;if(clash(f.day,f.time))return toast('Bu saatte başka randevun var');
+  const ids=slotsFor(f.sv,f.pro,f.day).find(x=>x.t===f.time).ids;const pro=ids[0];
+  const wid=useCredit(f.sv);S.cal[pro][f.day][f.time]='booked';
+  S.appts.push({id:'a'+Date.now(),sv:f.sv,pro,date:f.day,time:f.time,wid,paid:wid?'Paketten':'Tek seans'});
+  const msg=SV[f.sv].n+' · '+fmtD(f.day)+' '+f.time+' ✓';
+  if(f.then){const nx=f.then,nt=pad(+f.time.slice(0,2)+1)+':00',day=f.day;closeSheet();render();toast(msg);
+    setTimeout(()=>{startFlow(nx);UI.flow.day=day;if(slotsFor(nx,'any',day).find(x=>x.t===nt))UI.flow.time=nt;flowSheet()},450);return}
+  UI.flow=null;closeSheet();render();toast(msg);
+}
+function joinWait(k){S.waits.push({key:k,at:Date.now()});closeSheet();render();toast('Bekleme listesine eklendin')}
+function leaveWait(k){S.waits=S.waits.filter(w=>w.key!==k);closeSheet();render();toast('Bekleme listesinden çıktın')}
+
+function openAppt(id){const a=S.appts.find(x=>x.id===id),s=SV[a.sv],p=past(a.date,a.time);
+  openSheet(`<span class="tag" style="background:${s.c};color:#fff;margin:0 0 8px">${s.i} ${s.dur} dk</span><h3>${s.n}</h3><p class="mut" style="font-size:14px">${fmtD(a.date)} · ${a.time}</p><div class="card" style="margin:16px 0;padding:6px 14px"><div class="kv"><span class="mut">${P(a.pro).device?'Cihaz':'Uzman'}</span><b>${P(a.pro).name}</b></div><div class="kv"><span class="mut">Ödeme</span><b>${a.paid}</b></div><div class="kv"><span class="mut">Adres</span><b style="font-size:13px">Fener Kalamış Cd. No:21</b></div></div>`+(p?'<button class="btn block ghost" disabled>Tamamlandı</button>':`<button class="btn block" onclick="reschedule('${id}')">Saati değiştir</button><button class="btn block danger" style="margin-top:8px" onclick="cancelAppt('${id}')">İptal et</button>`))}
+function cancelAppt(id){const a=S.appts.find(x=>x.id===id),free=hrsUntil(a.date,a.time)>=24;
+  openSheet(`<h3>Randevuyu iptal et?</h3><p class="mut" style="font-size:14px;margin:6px 0 16px">${SV[a.sv].n} · ${fmtD(a.date)} ${a.time}</p><div class="card" style="margin-bottom:16px"><b style="color:${free?'var(--ok)':'var(--danger)'}">${free?'Ücretsiz iptal':'Geç iptal'}</b><p class="mut" style="font-size:13px;margin-top:4px">${free?'Randevuya 24 saatten fazla var'+(a.wid?', seans hakkın iade edilecek.':'.'):'Randevuya 24 saatten az kaldı'+(a.wid?', seans hakkın düşer.':'.')+' Saati değiştirmek ücretsiz.'}</p></div><button class="btn block" onclick="reschedule('${id}')">Bunun yerine saati değiştir</button><button class="btn block danger" style="margin-top:8px" onclick="doCancel('${id}',${free})">İptal et</button>`)}
+function doCancel(id,free){const a=S.appts.find(x=>x.id===id);S.cal[a.pro][a.date][a.time]='open';if(free&&a.wid)refund(a.wid);S.appts=S.appts.filter(x=>x.id!==id);closeSheet();render();toast(free&&a.wid?'İptal edildi · seans hakkın iade edildi':'Randevu iptal edildi')}
+function reschedule(id){const a=S.appts.find(x=>x.id===id);S.cal[a.pro][a.date][a.time]='open';if(a.wid)refund(a.wid);S.appts=S.appts.filter(x=>x.id!==id);startFlow(a.sv);UI.flow.pro=a.pro;UI.flow.day=a.date;flowSheet();toast('Yeni saat seç')}
+
+/* ---------------- TAKVİMLER ---------------- */
+function pros(){
+  if(UI.proView)return proDetail();
+  const card=p=>{const n=freeSlots(p.id,iso(TODAY)).length+freeSlots(p.id,iso(addDays(TODAY,1))).length;return `<div class="card pro" onclick="UI.proView='${p.id}';UI.pDay=firstFree('${p.id}');render()"><div class="pav" style="background:${p.col};font-size:${p.device?20:15}px">${p.ini}</div><div style="flex:1"><b>${p.name}</b><div class="mut" style="font-size:12.5px;margin-top:2px">${p.sv.map(s=>SV[s].n).join(' · ')}</div><span class="tag ok">${n} boş saat · bugün/yarın</span></div><span class="mut">›</span></div>`};
+  return `<h1>Takvimler</h1><h2 style="padding-top:0">Uzmanlar</h2><div class="wrap">`+PROS.filter(p=>!p.device).map(card).join('')+`</div><h2>Cihazlar</h2><div class="wrap">`+PROS.filter(p=>p.device).map(card).join('')+'</div>';
+}
+function firstFree(id){for(let i=0;i<14;i++){const k=iso(addDays(TODAY,i));if(freeSlots(id,k).length)return k}return iso(TODAY)}
+function proDetail(){
+  const p=P(UI.proView),cal=S.cal[p.id][UI.pDay]||{};
+  let h=`<div class="wrap" style="padding-top:6px"><a class="mut" style="cursor:pointer;font-size:14px" onclick="UI.proView=null;render()">‹ Takvimler</a></div><div class="wrap" style="margin-top:12px"><div class="row"><div class="pav" style="background:${p.col};width:62px;height:62px;font-size:${p.device?24:19}px">${p.ini}</div><div><h1 style="padding:0;font-size:23px">${p.name}</h1><div class="mut" style="font-size:13px">${p.bio}</div></div></div></div><div class="days" style="margin-top:16px">`;
+  for(let i=0;i<14;i++){const d=addDays(TODAY,i),k=iso(d),n=freeSlots(p.id,k).length,c=!HOURS(d.getDay());h+=`<div class="day ${UI.pDay===k?'on':''} ${c||!n?'off':''}" onclick="UI.pDay='${k}';render()"><small>${i===0?'Bugün':DN[d.getDay()]}</small><b>${d.getDate()}</b><small>${c?'Kapalı':n?n+' boş':'Dolu'}</small></div>`}
+  const list=Object.entries(cal).filter(([t,v])=>v!=='closed');
+  h+=`</div><div class="wrap">`+(list.length?`<div class="slots">`+list.map(([t,v])=>{const x=v==='booked'||past(UI.pDay,t);return `<div class="slot ${x?'taken':''}" onclick="${x?'':`bookFromPro('${p.id}','${t}')`}">${t}</div>`}).join('')+'</div>':`<div class="card empty">${HOURS(dow(UI.pDay))?'Bu gün için açık saat yok.':'Pazar günleri kapalıyız.'}</div>`)+`<p class="note" style="padding:12px 2px">Boş bir saate dokun, hizmeti seç ve onayla.</p></div>`;
+  return h;
+}
+function pickSvc(sv,pid,t){UI.flow={sv,pro:pid,day:UI.pDay,time:t,then:null};flowSheet()}
+function bookFromPro(pid,t){const p=P(pid);if(p.sv.length===1)return pickSvc(p.sv[0],pid,t);
+  openSheet(`<h3>${t} · Hizmet seç</h3><p class="mut" style="font-size:14px;margin-bottom:14px">${p.name} · ${fmtD(UI.pDay)}</p>`+p.sv.map(s=>`<div class="opt" onclick="pickSvc('${s}','${pid}','${t}')"><div class="pav" style="background:${SV[s].c};width:40px;height:40px;font-size:18px">${SV[s].i}</div><div><b style="font-size:14px">${SV[s].n}</b><div class="mut" style="font-size:12px">${SV[s].dur} dk · ${credit(s)?credit(s)+' seans hakkın var':'tek seans'}</div></div></div>`).join(''))}
+
+/* ---------------- PAKETLER ---------------- */
+function packages(){
+  const act=S.wallet.filter(w=>w.used<w.total);
+  let h=`<h1>Paketler</h1><h2 style="padding-top:0">Aktif paketlerim</h2><div class="wrap">`+(act.length?act.map(w=>`<div class="card" style="margin-bottom:10px"><div class="row between"><b>${SV[w.sv].i} ${w.name}</b><span class="mut" style="font-size:12.5px">${w.total-w.used}/${w.total} seans</span></div><div class="meter"><i style="width:${(w.total-w.used)/w.total*100}%"></i></div><small class="mut">Son kullanım: ${fmtD(w.exp)}</small></div>`).join(''):'<div class="card empty">Aktif paketin yok.</div>');
+  h+=`</div><h2>Seans paketleri</h2><div class="wrap">`+PKGS.map(k=>`<div class="card" style="margin-bottom:10px"><div class="row between"><div class="row"><div class="pav" style="background:${SV[k.sv].c}22;width:42px;height:42px;font-size:19px;border-radius:14px">${SV[k.sv].i}</div><div><b>${k.name}</b><div class="mut" style="font-size:12.5px">${k.n} seans · ${k.days} gün geçerli</div></div></div><b>₺ —</b></div><button class="btn sm" style="margin-top:12px" onclick="buy('${k.id}')">Satın al</button></div>`).join('')+`</div><div class="note">Fiyatlar salon tarafından girilecek. Ödeme adımı prototipte simüle edilir.</div>`;
+  return h;
+}
+function buy(id){const k=PKGS.find(x=>x.id===id);openSheet(`<h3>${k.name}</h3><div class="card" style="margin:16px 0;padding:6px 14px"><div class="kv"><span class="mut">Hizmet</span><b>${SV[k.sv].n}</b></div><div class="kv"><span class="mut">Seans</span><b>${k.n}</b></div><div class="kv"><span class="mut">Geçerlilik</span><b>${k.days} gün</b></div><div class="kv"><span class="mut">Tutar</span><b>₺ —</b></div></div><button class="btn block acc" onclick="doBuy('${id}')">Ödemeye geç (demo)</button>`)}
+function doBuy(id){const k=PKGS.find(x=>x.id===id);S.wallet.push({id:'w'+Date.now(),sv:k.sv,name:k.name,total:k.n,used:0,exp:iso(addDays(TODAY,k.days))});closeSheet();render();toast(k.name+' hesabına eklendi ✓')}
+
+/* ---------------- PROFİL ---------------- */
+function profile(){
+  const up=S.appts.filter(a=>!past(a.date,a.time)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time)),ps=S.appts.filter(a=>past(a.date,a.time));
+  let h=`<h1>Profil</h1><div class="seg"><div class="${UI.seg==='up'?'on':''}" onclick="UI.seg='up';render()">Yaklaşan (${up.length})</div><div class="${UI.seg==='wait'?'on':''}" onclick="UI.seg='wait';render()">Bekleme (${S.waits.length})</div><div class="${UI.seg==='past'?'on':''}" onclick="UI.seg='past';render()">Geçmiş</div></div><div class="wrap">`;
+  if(UI.seg==='wait')h+=S.waits.length?S.waits.map(w=>{const[sv,pro,day]=w.key.split('|');return `<div class="alt"><div><b style="font-size:14px">${SV[sv].i} ${SV[sv].n}</b><div class="mut" style="font-size:12px">${fmtD(day)} · ${pro==='any'?'Herhangi bir uzman':P(pro).name}</div></div><span class="tag wait">Bekliyor</span></div>`}).join(''):'<div class="card empty">Bekleme listesinde bir şey yok.</div>';
+  else{const l=UI.seg==='up'?up:ps;h+=l.length?l.map(apptItem).join(''):'<div class="card empty">Burada henüz bir şey yok.</div>'}
+  h+=`</div><h2>Ayarlar</h2><div class="wrap"><div class="card" style="padding:6px 14px"><div class="kv"><span>Randevu hatırlatıcısı</span><b class="mut">1 gün + 2 saat önce</b></div><div class="kv"><span>Bekleme listesi bildirimi</span><b style="color:var(--ok)">Açık</b></div><div class="kv"><span>İptal kuralı</span><b class="mut">24 saat</b></div><div class="kv"><span>Cilt / sağlık notlarım</span><b class="mut">Ekle ›</b></div></div>
+  <div class="card" style="margin-top:12px"><b>Uzman & cihaz paneli</b><p class="mut" style="font-size:13px;margin:6px 0 12px">Uzmanların saat açtığı, günlük randevularını gördüğü ekran.</p><button class="btn sm" onclick="UI.role='panel';window.scrollTo(0,0);render()">Panele geç</button></div>
+  <button class="btn block ghost" style="margin-top:12px" onclick="try{localStorage.removeItem('kb_state')}catch(e){};location.reload()">Demo verisini sıfırla</button></div>`;
+  return h;
+}
+
+/* ---------------- UZMAN PANELİ ---------------- */
+function panel(){
+  const p=P(UI.panelPro),day=UI.panelDay,cal=S.cal[p.id][day]||{},H=HOURS(dow(day));
+  let h=`<div class="mode">UZMAN PANELİ</div><div class="wrap"><select onchange="UI.panelPro=this.value;render()">`+PROS.map(x=>`<option value="${x.id}" ${x.id===p.id?'selected':''}>${x.name}</option>`).join('')+`</select></div><h1 style="padding-top:14px">Takvimim</h1><div class="days">`;
+  for(let i=0;i<14;i++){const d=addDays(TODAY,i),k=iso(d),n=S.appts.filter(a=>a.pro===p.id&&a.date===k).length+Object.values(S.cal[p.id][k]||{}).filter(v=>v==='booked').length;h+=`<div class="day ${day===k?'on':''} ${!HOURS(d.getDay())?'off':''}" onclick="UI.panelDay='${k}';render()"><small>${i===0?'Bugün':DN[d.getDay()]}</small><b>${d.getDate()}</b><small>${HOURS(d.getDay())?(n?n+' dolu':'—'):'Kapalı'}</small></div>`}
+  h+=`</div>`;
+  if(!H)return h+`<div class="wrap"><div class="card empty">Pazar günleri salon kapalı.</div></div>`;
+  const mine=S.appts.filter(a=>a.pro===p.id&&a.date===day);
+  h+=`<h2 style="padding-top:4px">Uygulamadan gelen randevular</h2><div class="wrap">`+(mine.length?mine.map(a=>`<div class="alt"><div><b style="font-size:14px">${a.time} · ${SV[a.sv].n}</b><div class="mut" style="font-size:12px">${S.user.name} · ${a.paid}</div></div><span class="tag ok">Onaylı</span></div>`).join(''):'<div class="mut" style="font-size:13px">Bu gün uygulamadan gelen randevu yok.</div>')+`</div>`;
+  h+=`<h2>Saatlerim <a onclick="openAll()">Tümünü aç</a></h2><div class="wrap"><div class="slots">`;
+  for(let x=H[0];x<H[1];x++){const t=pad(x)+':00',v=cal[t]||'closed';h+=`<div class="slot ${v}" onclick="toggle('${t}')">${t}<div style="font-size:10px;font-weight:500;margin-top:2px">${v==='open'?'Açık':v==='booked'?'Dolu':'Kapalı'}</div></div>`}
+  return h+`</div><p class="mut" style="font-size:12px;margin-top:12px">Saate dokunarak aç/kapat. Açtığın saatler müşterilerin uygulamasında anında görünür; bekleme listesindekilere bildirim gider.</p></div>`;
+}
+function toggle(t){const c=S.cal[UI.panelPro][UI.panelDay],v=c[t]||'closed';if(v==='booked'){const a=S.appts.find(a=>a.pro===UI.panelPro&&a.date===UI.panelDay&&a.time===t);return openSheet(`<h3>${t} · Dolu</h3><p class="mut" style="font-size:14px;margin:6px 0 16px">${a?S.user.name+' · '+SV[a.sv].n+' · '+a.paid:'Salondan / telefonla alınmış randevu'}</p><button class="btn block ghost" onclick="closeSheet()">Tamam</button>`)}
+  c[t]=v==='open'?'closed':'open';const w=S.waits.filter(w=>w.key.split('|')[2]===UI.panelDay).length;render();toast(t+(c[t]==='open'?' açıldı'+(w?' · '+w+' kişiye bildirim gitti':''):' kapatıldı'))}
+function openAll(){const c=S.cal[UI.panelPro][UI.panelDay],H=HOURS(dow(UI.panelDay));for(let x=H[0];x<H[1];x++){const t=pad(x)+':00';if((c[t]||'closed')==='closed')c[t]='open'}render();toast('Günün tüm boş saatleri açıldı')}
+
+render();
+</script>
+</body>
+</html>
