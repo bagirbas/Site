@@ -104,6 +104,14 @@ select{background:var(--card2);color:var(--txt);border:1px solid var(--line);bor
 .kpill .o-beauty{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:.02em;font-size:15px}
 .kpill .opt.cur{border-radius:999px}
 .kpill{background:#1a1d21;border:1px solid #2c3137}.kpill .o-fit{background:#c8f560;color:#15190a}.kpill .o-beauty{color:#9aa1a9}
+
+/* iOS kaydırma güvenliği */
+html{height:auto;overflow-y:auto;-webkit-text-size-adjust:100%}
+body{display:block!important;height:auto;overflow-y:visible;overscroll-behavior-y:auto;touch-action:pan-x pan-y}
+#app{margin:0 auto;min-height:100svh}
+.sheet{visibility:hidden;transition:transform .25s ease,visibility 0s linear .25s}
+.sheet.show{visibility:visible;transition:transform .25s ease,visibility 0s}
+.toast{visibility:hidden}.toast.show{visibility:visible}
 </style>
 </head>
 <body>
