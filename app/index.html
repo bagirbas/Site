@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1113">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Kalissa · Fit & Beauty Wellness · Uygulama Prototipi</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{font-family:-apple-system,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#000;display:flex;justify-content:center}
+.shell{width:100%;max-width:440px;height:100%;display:flex;flex-direction:column;position:relative;transition:background .3s}
+.shell.fit{background:#0f1113}.shell.beauty{background:#f6f1ea}
+.demo{font-size:11px;text-align:center;padding:6px 10px;transition:.3s}
+.fit .demo{background:#0a0b0c;color:#9aa1a9}.beauty .demo{background:#efe7dc;color:#8a7d71}
+.switch{padding:10px 16px 8px;padding-top:calc(10px + env(safe-area-inset-top))}
+.pill{position:relative;display:flex;border-radius:999px;padding:4px;transition:background .3s}
+.fit .pill{background:#1a1d21;border:1px solid #2c3137}.beauty .pill{background:#efe7dc;border:1px solid #e4d9cb}
+.knob{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:999px;transition:transform .3s cubic-bezier(.4,.1,.2,1),background .3s}
+.fit .knob{background:#c8f560;transform:translateX(0)}
+.beauty .knob{background:#2a2420;transform:translateX(100%)}
+.opt{position:relative;z-index:1;flex:1;text-align:center;padding:10px 0;font-weight:800;font-size:13px;letter-spacing:.06em;cursor:pointer;transition:color .3s;user-select:none}
+.opt small{display:block;font-size:9.5px;font-weight:600;letter-spacing:.14em;opacity:.75;margin-top:1px}
+.fit .o-fit{color:#15190a}.fit .o-beauty{color:#9aa1a9}
+.beauty .o-fit{color:#8a7d71}.beauty .o-beauty{color:#f6f1ea}
+.o-beauty{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:.02em;font-size:15px}
+.frames{position:relative;flex:1}
+iframe{position:absolute;inset:0;width:100%;height:100%;border:0;opacity:0;pointer-events:none;transition:opacity .25s}
+iframe.on{opacity:1;pointer-events:auto}
+</style>
+</head>
+<body>
+<div class="shell fit" id="shell">
+  <div class="demo">Kalissa için hazırlanmış uygulama prototipidir · örnek veri</div>
+  <div class="switch">
+    <div class="pill">
+      <div class="knob"></div>
+      <div class="opt o-fit" onclick="switchTo('fit')">KALISSA FIT<small>DERSLER · EMS</small></div>
+      <div class="opt o-beauty" onclick="switchTo('beauty')">Beauty & Wellness<small style="font-family:-apple-system,Segoe UI,sans-serif">BAKIM · DİYETİSYEN</small></div>
+    </div>
+  </div>
+  <div class="frames">
+    <iframe id="f-fit" src="../kalissa/?embed=1" title="Kalissa Fit"></iframe>
+    <iframe id="f-beauty" src="../kalissa-beauty/?embed=1" title="Kalissa Beauty & Wellness" loading="lazy"></iframe>
+  </div>
+</div>
+<script>
+function switchTo(k){
+  const sh=document.getElementById('shell');
+  sh.className='shell '+k;
+  document.getElementById('f-fit').classList.toggle('on',k==='fit');
+  document.getElementById('f-beauty').classList.toggle('on',k==='beauty');
+  document.querySelector('meta[name=theme-color]').content=k==='fit'?'#0f1113':'#f6f1ea';
+  try{localStorage.setItem('kalissa_side',k)}catch(e){}
+  if(history.replaceState) history.replaceState(null,'','#'+k);
+}
+let start=(location.hash||'').slice(1);
+if(start!=='fit'&&start!=='beauty'){try{start=localStorage.getItem('kalissa_side')}catch(e){}}
+switchTo(start==='beauty'?'beauty':'fit');
+</script>
+</body>
+</html>

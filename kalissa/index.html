@@ -84,7 +84,7 @@ h2 a{font-size:13px;color:var(--acc);text-decoration:none;font-weight:600;cursor
 .sheet h3{font-size:21px;margin-bottom:4px}
 .kv{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}
 .kv:last-child{border:0}
-.toast{position:fixed;top:16px;left:50%;transform:translate(-50%,-140%);background:var(--txt);color:#000;padding:12px 18px;border-radius:14px;font-weight:600;font-size:14px;z-index:60;transition:transform .25s;max-width:90%;text-align:center}
+.toast{position:fixed;top:16px;left:50%;transform:translate(-50%,-300%);background:var(--txt);color:#000;padding:12px 18px;border-radius:14px;font-weight:600;font-size:14px;z-index:60;transition:transform .25s;max-width:90%;text-align:center}
 .toast.show{transform:translate(-50%,0)}
 .alt{padding:12px;border-radius:14px;background:var(--card);border:1px solid var(--line);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:10px}
 .empty{padding:28px 20px;text-align:center;color:var(--mut);font-size:14px}
@@ -106,6 +106,7 @@ select{background:var(--card2);color:var(--txt);border:1px solid var(--line);bor
 <div class="toast" id="toast"></div>
 
 <script>
+const EMBED=/embed/.test(location.search);
 /* ------------------ VERİ (örnek) ------------------ */
 const BR = {
   boks:{n:'Boks',c:'var(--boks)'}, fonk:{n:'Fonksiyonel',c:'var(--fonk)'},
@@ -198,7 +199,7 @@ const isPast=(date,time)=>hoursUntil(date,time)<0;
 /* ------------------ EKRANLAR ------------------ */
 function render(){
   const a=$('#app');
-  let h='<div class="demo">Kalissa Fit için hazırlanmış uygulama prototipidir · örnek veri</div>';
+  let h=EMBED?'':'<div class="demo">Kalissa Fit için hazırlanmış uygulama prototipidir · örnek veri</div>';
   h+=`<header class="top"><div class="brand">KALISSA<span>FIT</span></div><div class="avatar" onclick="go('profile')">${S.user.name[0]}</div></header>`;
   if(UI.role==='coach') h+=coachView(); else h+=({home,classes,trainers,packages,profile})[UI.tab]();
   a.innerHTML=h+tabbar();
@@ -225,6 +226,7 @@ function home(){
   const today=S.classes.filter(c=>c.date===iso(TODAY)&&!isPast(c.date,c.time));
   h+=`<h2>Bugün stüdyoda <a onclick="go('classes')">Tümü</a></h2><div class="wrap">`;
   h+= today.length? today.map(clsCard).join('') : `<div class="card empty">Bugün için kalan grup dersi yok.<br><a style="color:var(--acc);cursor:pointer" onclick="UI.day='${iso(addDays(TODAY,1))}';go('classes')">Yarının programına bak →</a></div>`;
+  if(EMBED) h+=`</div><h2>Antrenman sonrası</h2><div class="wrap"><div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:pointer;background:linear-gradient(135deg,#2a2420,#3a2c25);border-color:#4a382e" onclick="parent.switchTo&&parent.switchTo('beauty')"><div><b>Ozon Sauna · Selülit Masajı</b><div class="mut" style="font-size:12.5px;margin-top:3px">Aynı binada, Kalissa Beauty & Wellness'ta</div></div><span class="btn sm" style="background:#e9d3c2;color:#2a2420">Randevu →</span></div>`;
   h+=`</div><h2>Birebir saat al</h2><div class="chips">`+TRAINERS.map(t=>`<div class="chip" onclick="openTrainer('${t.id}')">${t.name.split(' ')[0]} · ${t.br.map(b=>BR[b].n).join('/')}</div>`).join('')+'</div>';
   return h;
 }
