@@ -10,7 +10,7 @@
 :root{
   --bg:#f6f1ea;--card:#fffdf9;--card2:#efe7dc;--line:#e4d9cb;--txt:#2a2420;--mut:#8a7d71;
   --acc:#b07a5f;--acc2:#8f5d45;--ink:#fff;--danger:#b4533f;--ok:#5f7f62;--warn:#b98a2c;
-  --nail:#d98fa4;--cilt:#c9a27e;--masaj:#8fa68e;--vacuo:#7f9bb8;--ozon:#9c8fc0;--selulit:#c98a6b;--emslim:#6f8f9c;
+  --nail:#d98fa4;--cilt:#c9a27e;--masaj:#8fa68e;--vacuo:#7f9bb8;--ozon:#9c8fc0;--selulit:#c98a6b;--emslim:#6f8f9c;--diyet:#8fa35a;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#e9e1d6;color:var(--txt);display:flex;justify-content:center}
@@ -101,12 +101,15 @@ const SV = {
   selulit:{n:'Selülit Masajı',  i:'🤲',dur:45,c:'var(--selulit)',res:'staff', d:'Tüm vücut selülit ve bölgesel sıkılaşma masajı.'},
   vacuo:  {n:'Vacuo Active',    i:'🌀',dur:30,c:'var(--vacuo)',  res:'device',dev:'Vacuo Active Kabini', d:'Vakum destekli yürüyüş ile bölgesel incelme.'},
   ozon:   {n:'Ozon Sauna',      i:'♨️',dur:30,c:'var(--ozon)',   res:'device',dev:'Ozon Sauna Kabini', d:'Detoks ve dolaşımı destekleyen ozonlu buhar seansı.'},
+  diyet:  {n:'Diyetisyen · İlk Görüşme',i:'🥗',dur:60,c:'var(--diyet)',res:'staff',online:true,d:'Vücut analizi, beslenme alışkanlıkları ve hedefe göre kişiye özel program.'},
+  diyetk: {n:'Diyetisyen · Kontrol',i:'📋',dur:30,c:'var(--diyet)',res:'staff',online:true,d:'Ölçüm, ilerleme takibi ve programın güncellenmesi.'},
   emslim: {n:'Emslim',          i:'⚡',dur:30,c:'var(--emslim)', res:'device',dev:'Emslim Cihazı', d:'Kas uyarımı ile bölgesel şekillendirme.'}
 };
 const PROS = [
   {id:'p1',name:'Elif Demir', ini:'ED',col:'#c9a27e',sv:['cilt','selulit'],bio:'Uzman estetisyen · cilt bakımı ve selülit protokolleri'},
   {id:'p2',name:'Merve Aslan',ini:'MA',col:'#d98fa4',sv:['nail'],bio:'Nail artist · jel, kalıcı oje ve tasarım'},
   {id:'p3',name:'Zeynep Kır', ini:'ZK',col:'#8fa68e',sv:['masaj','selulit'],bio:'Masaj terapisti · klasik, aromaterapi, selülit'},
+  {id:'p4',name:'Tansu Akyurt',ini:'TA',col:'#8fa35a',sv:['diyet','diyetk'],bio:'Diyetisyen · kişiye özel beslenme programı'},
   {id:'d1',name:'Vacuo Active Kabini',ini:'🌀',col:'#7f9bb8',sv:['vacuo'],device:true,bio:'Cihaz takvimi · operatör eşliğinde'},
   {id:'d2',name:'Ozon Sauna Kabini',ini:'♨️',col:'#9c8fc0',sv:['ozon'],device:true,bio:'Cihaz takvimi · operatör eşliğinde'},
   {id:'d3',name:'Emslim Cihazı',ini:'⚡',col:'#6f8f9c',sv:['emslim'],device:true,bio:'Cihaz takvimi · operatör eşliğinde'}
@@ -118,9 +121,10 @@ const PKGS = [
   {id:'k4',sv:'ozon',   name:'Ozon Sauna 10',    n:10,days:90},
   {id:'k5',sv:'cilt',   name:'Cilt Bakımı 4',    n:4, days:120},
   {id:'k6',sv:'masaj',  name:'Masaj 5',          n:5, days:90},
+  {id:'k8',sv:'diyetk', name:'Diyet Takip 4',    n:4, days:60},
   {id:'k7',sv:'nail',   name:'Nail Art 4',       n:4, days:120}
 ];
-const COMBOS = [['ozon','vacuo','Ozon Sauna + Vacuo Active'],['emslim','selulit','Emslim + Selülit Masajı']];
+const COMBOS = [['diyetk','emslim','Diyet Kontrolü + Emslim'],['ozon','vacuo','Ozon Sauna + Vacuo Active'],['emslim','selulit','Emslim + Selülit Masajı']];
 const HOURS = d => d===0 ? null : (d===6 ? [10,19] : [10,20]); // Google'daki saatler, Pazar kapalı
 
 /* ---------------- DURUM ---------------- */
@@ -137,8 +141,8 @@ function buildCal(){const cal={};PROS.forEach(p=>{cal[p.id]={};for(let i=0;i<21;
   if(i<2&&p.id==='d1'){Object.keys(cal[p.id][k]).forEach(t=>cal[p.id][k][t]='booked')}}});return cal}
 const store={get(k){try{return JSON.parse(localStorage.getItem('kb_'+k))}catch(e){return null}},set(k,v){try{localStorage.setItem('kb_'+k,JSON.stringify(v))}catch(e){}}};
 let S=store.get('state');
-if(!S||S.v!==1||S.today!==iso(TODAY)){
-  S={v:1,today:iso(TODAY),cal:buildCal(),
+if(!S||S.v!==2||S.today!==iso(TODAY)){
+  S={v:2,today:iso(TODAY),cal:buildCal(),
      wallet:[{id:'w1',sv:'vacuo',name:'Vacuo Active 10',total:10,used:4,exp:iso(addDays(TODAY,35))},{id:'w2',sv:'selulit',name:'Selülit Masajı 8',total:8,used:3,exp:iso(addDays(TODAY,40))},{id:'w3',sv:'ozon',name:'Ozon Sauna 10',total:10,used:7,exp:iso(addDays(TODAY,22))}],
      appts:[],waits:[],user:{name:'Burak'}};
   const k=nextOpenDay(),t=k&&Object.entries(S.cal.p1[k]).find(([h,v])=>v==='open');
@@ -178,7 +182,7 @@ function tabbar(){
   return '<nav class="tabbar">'+Object.keys(L).map(k=>`<div class="tab ${UI.tab===k?'on':''}" onclick="go('${k}')"><svg viewBox="0 0 24 24">${I[k]}</svg>${L[k]}</div>`).join('')+'</nav>';
 }
 function svcTile(k){const s=SV[k],c=credit(k);return `<div class="svc" onclick="startFlow('${k}')"><div class="dot" style="background:${s.c}22">${s.i}</div><div><b>${s.n}</b><small>${s.dur} dk${c?` · ${c} seans hakkın`:''}</small></div></div>`}
-function apptItem(a){const s=SV[a.sv];return `<div class="item" onclick="openAppt('${a.id}')" style="${past(a.date,a.time)?'opacity:.5':''}"><div class="time"><b>${a.time}</b><small>${fmtD(a.date).split(' ').slice(0,2).join(' ')}</small></div><div class="bar" style="background:${s.c}"></div><div class="info"><b>${s.n}</b><small>${P(a.pro).name} · ${s.dur} dk</small></div><span class="mut">›</span></div>`}
+function apptItem(a){const s=SV[a.sv];return `<div class="item" onclick="openAppt('${a.id}')" style="${past(a.date,a.time)?'opacity:.5':''}"><div class="time"><b>${a.time}</b><small>${fmtD(a.date).split(' ').slice(0,2).join(' ')}</small></div><div class="bar" style="background:${s.c}"></div><div class="info"><b>${s.n}</b><small>${P(a.pro).name} · ${s.dur} dk${a.mode==='Online'?' · Online':''}</small></div><span class="mut">›</span></div>`}
 
 function home(){
   const up=S.appts.filter(a=>!past(a.date,a.time)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
@@ -187,14 +191,15 @@ function home(){
   else h+=`<div class="card hero"><b style="font-family:Georgia,serif;font-weight:400;font-size:20px">Kendine zaman ayır</b><p class="mut" style="font-size:13px;margin:6px 0 14px">Bir hizmet seç, uygun uzmanı ve saati bulalım.</p><button class="btn sm" onclick="go('services')">Randevu al</button></div>`;
   const act=S.wallet.filter(w=>w.used<w.total);
   if(act.length){h+=`</div><h2>Seans haklarım <a onclick="go('packages')">Tümü</a></h2><div class="wrap">`+act.map(w=>`<div class="card" style="margin-bottom:10px;padding:14px"><div class="row between"><b style="font-size:14px">${SV[w.sv].i} ${w.name}</b><span class="mut" style="font-size:12.5px">${w.total-w.used}/${w.total}</span></div><div class="meter"><i style="width:${(w.total-w.used)/w.total*100}%"></i></div><div class="row between"><small class="mut">Son gün ${fmtD(w.exp)}</small><a style="font-size:13px;font-weight:700;color:var(--acc);cursor:pointer" onclick="startFlow('${w.sv}')">Randevu al</a></div></div>`).join('')}
+  h+=`</div><h2>Beslenme danışmanlığı</h2><div class="wrap"><div class="card" style="display:flex;gap:14px;align-items:center"><div class="pav" style="background:#8fa35a">TA</div><div style="flex:1"><b>Tansu Akyurt</b><div class="mut" style="font-size:12.5px;margin-top:2px">Diyetisyen · yüz yüze veya online</div><div class="row" style="gap:8px;margin-top:10px"><button class="btn sm acc" onclick="startFlow('diyet')">İlk görüşme</button><button class="btn sm ghost" onclick="startFlow('diyetk')">Kontrol</button></div></div></div><p class="note" style="padding:8px 2px 0">Vücut şekillendirme seanslarını (Emslim, Vacuo Active) beslenme programıyla birlikte planlayabilirsin.</p>`;
   h+=`</div><h2>Hızlı randevu</h2><div class="wrap"><div class="svc-grid">`+Object.keys(SV).slice(0,4).map(svcTile).join('')+`</div></div>`;
   h+=`<h2>Birlikte iyi gider</h2><div class="wrap">`+COMBOS.map(([a,b,n])=>`<div class="alt" style="cursor:pointer" onclick="startFlow('${a}','${b}')"><div><b style="font-size:14px">${SV[a].i} ${n}</b><div class="mut" style="font-size:12px">Arka arkaya iki seans · ${SV[a].dur+SV[b].dur} dk</div></div><span class="btn sm acc">Planla</span></div>`).join('')+'</div>';
   return h;
 }
-function services(){return `<h1>Hizmetler</h1><div class="wrap"><div class="svc-grid">`+Object.keys(SV).map(svcTile).join('')+`</div></div><div class="note">Vacuo Active, Ozon Sauna ve Emslim cihaz takvimine göre, diğer hizmetler uzman takvimine göre planlanır.</div>`}
+function services(){return `<h1>Hizmetler</h1><div class="wrap"><div class="svc-grid">`+Object.keys(SV).map(svcTile).join('')+`</div></div><div class="note">Vacuo Active, Ozon Sauna ve Emslim cihaz takvimine göre, diğer hizmetler uzman takvimine göre planlanır. Diyetisyen görüşmeleri yüz yüze veya online yapılabilir.</div>`}
 
 /* ---------------- RANDEVU AKIŞI ---------------- */
-function startFlow(sv,then){const ps=prosFor(sv);UI.flow={sv,then:then||null,pro:ps.length===1?ps[0].id:'any',day:firstDayWith(sv,ps.length===1?ps[0].id:'any'),time:null};flowSheet()}
+function startFlow(sv,then){const ps=prosFor(sv);UI.flow={sv,then:then||null,mode:'Yüz yüze',pro:ps.length===1?ps[0].id:'any',day:firstDayWith(sv,ps.length===1?ps[0].id:'any'),time:null};flowSheet()}
 function slotsFor(sv,pro,day){if(!HOURS(dow(day)))return[];const ids=pro==='any'?prosFor(sv).map(p=>p.id):[pro];const set={};ids.forEach(id=>freeSlots(id,day).forEach(t=>{(set[t]=set[t]||[]).push(id)}));return Object.keys(set).sort().map(t=>({t,ids:set[t]}))}
 function firstDayWith(sv,pro){for(let i=0;i<21;i++){const k=iso(addDays(TODAY,i));if(slotsFor(sv,pro,k).length)return k}return iso(TODAY)}
 function flowSheet(){
@@ -203,6 +208,7 @@ function flowSheet(){
   h+=`<div class="step">1 · ${s.res==='device'?'Cihaz':'Uzman'}</div>`;
   if(ps.length>1) h+=`<div class="opt ${f.pro==='any'?'on':''}" onclick="UI.flow.pro='any';UI.flow.time=null;flowSheet()"><div class="pav" style="background:var(--card2);color:var(--txt);width:40px;height:40px;font-size:14px">★</div><div><b style="font-size:14px">Fark etmez</b><div class="mut" style="font-size:12px">En erken uygun uzman</div></div></div>`;
   h+=ps.map(p=>`<div class="opt ${f.pro===p.id?'on':''}" onclick="UI.flow.pro='${p.id}';UI.flow.time=null;flowSheet()"><div class="pav" style="background:${p.col};width:40px;height:40px;font-size:${p.device?18:14}px">${p.ini}</div><div><b style="font-size:14px">${p.name}</b><div class="mut" style="font-size:12px">${p.bio}</div></div></div>`).join('');
+  if(s.online) h+=`<div class="step">Görüşme şekli</div><div class="row" style="gap:8px">`+['Yüz yüze','Online'].map(m=>`<div class="chip ${f.mode===m?'on':''}" onclick="UI.flow.mode='${m}';flowSheet()">${m==='Online'?'📱 Online (görüntülü)':'🏠 Yüz yüze · Kalamış'}</div>`).join('')+`</div>`;
   h+=`<div class="step">2 · Gün</div><div class="days" style="padding:0 0 4px;margin:0 -20px;padding-left:20px">`;
   for(let i=0;i<14;i++){const d=addDays(TODAY,i),k=iso(d),n=slotsFor(f.sv,f.pro,k).length,closed=!HOURS(d.getDay());h+=`<div class="day ${f.day===k?'on':''} ${closed||!n?'off':''}" onclick="UI.flow.day='${k}';UI.flow.time=null;flowSheet()"><small>${i===0?'Bugün':DN[d.getDay()]}</small><b>${d.getDate()}</b><small>${closed?'Kapalı':n?n+' boş':'Dolu'}</small></div>`}
   h+=`</div><div class="step">3 · Saat</div>`;
@@ -229,7 +235,7 @@ function confirmFlow(){
   const f=UI.flow;if(clash(f.day,f.time))return toast('Bu saatte başka randevun var');
   const ids=slotsFor(f.sv,f.pro,f.day).find(x=>x.t===f.time).ids;const pro=ids[0];
   const wid=useCredit(f.sv);S.cal[pro][f.day][f.time]='booked';
-  S.appts.push({id:'a'+Date.now(),sv:f.sv,pro,date:f.day,time:f.time,wid,paid:wid?'Paketten':'Tek seans'});
+  S.appts.push({id:'a'+Date.now(),sv:f.sv,pro,date:f.day,time:f.time,wid,paid:wid?'Paketten':'Tek seans',mode:SV[f.sv].online?f.mode:null});
   const msg=SV[f.sv].n+' · '+fmtD(f.day)+' '+f.time+' ✓';
   if(f.then){const nx=f.then,nt=pad(+f.time.slice(0,2)+1)+':00',day=f.day;closeSheet();render();toast(msg);
     setTimeout(()=>{startFlow(nx);UI.flow.day=day;if(slotsFor(nx,'any',day).find(x=>x.t===nt))UI.flow.time=nt;flowSheet()},450);return}
@@ -239,7 +245,7 @@ function joinWait(k){S.waits.push({key:k,at:Date.now()});closeSheet();render();t
 function leaveWait(k){S.waits=S.waits.filter(w=>w.key!==k);closeSheet();render();toast('Bekleme listesinden çıktın')}
 
 function openAppt(id){const a=S.appts.find(x=>x.id===id),s=SV[a.sv],p=past(a.date,a.time);
-  openSheet(`<span class="tag" style="background:${s.c};color:#fff;margin:0 0 8px">${s.i} ${s.dur} dk</span><h3>${s.n}</h3><p class="mut" style="font-size:14px">${fmtD(a.date)} · ${a.time}</p><div class="card" style="margin:16px 0;padding:6px 14px"><div class="kv"><span class="mut">${P(a.pro).device?'Cihaz':'Uzman'}</span><b>${P(a.pro).name}</b></div><div class="kv"><span class="mut">Ödeme</span><b>${a.paid}</b></div><div class="kv"><span class="mut">Adres</span><b style="font-size:13px">Fener Kalamış Cd. No:21</b></div></div>`+(p?'<button class="btn block ghost" disabled>Tamamlandı</button>':`<button class="btn block" onclick="reschedule('${id}')">Saati değiştir</button><button class="btn block danger" style="margin-top:8px" onclick="cancelAppt('${id}')">İptal et</button>`))}
+  openSheet(`<span class="tag" style="background:${s.c};color:#fff;margin:0 0 8px">${s.i} ${s.dur} dk</span><h3>${s.n}</h3><p class="mut" style="font-size:14px">${fmtD(a.date)} · ${a.time}</p><div class="card" style="margin:16px 0;padding:6px 14px"><div class="kv"><span class="mut">${P(a.pro).device?'Cihaz':'Uzman'}</span><b>${P(a.pro).name}</b></div><div class="kv"><span class="mut">Ödeme</span><b>${a.paid}</b></div>${a.mode==='Online'?'<div class="kv"><span class="mut">Görüşme</span><b style="font-size:13px">Online · link 15 dk önce gelir</b></div>':'<div class="kv"><span class="mut">Adres</span><b style="font-size:13px">Fener Kalamış Cd. No:21</b></div>'}</div>`+(p?'<button class="btn block ghost" disabled>Tamamlandı</button>':`<button class="btn block" onclick="reschedule('${id}')">Saati değiştir</button><button class="btn block danger" style="margin-top:8px" onclick="cancelAppt('${id}')">İptal et</button>`))}
 function cancelAppt(id){const a=S.appts.find(x=>x.id===id),free=hrsUntil(a.date,a.time)>=24;
   openSheet(`<h3>Randevuyu iptal et?</h3><p class="mut" style="font-size:14px;margin:6px 0 16px">${SV[a.sv].n} · ${fmtD(a.date)} ${a.time}</p><div class="card" style="margin-bottom:16px"><b style="color:${free?'var(--ok)':'var(--danger)'}">${free?'Ücretsiz iptal':'Geç iptal'}</b><p class="mut" style="font-size:13px;margin-top:4px">${free?'Randevuya 24 saatten fazla var'+(a.wid?', seans hakkın iade edilecek.':'.'):'Randevuya 24 saatten az kaldı'+(a.wid?', seans hakkın düşer.':'.')+' Saati değiştirmek ücretsiz.'}</p></div><button class="btn block" onclick="reschedule('${id}')">Bunun yerine saati değiştir</button><button class="btn block danger" style="margin-top:8px" onclick="doCancel('${id}',${free})">İptal et</button>`)}
 function doCancel(id,free){const a=S.appts.find(x=>x.id===id);S.cal[a.pro][a.date][a.time]='open';if(free&&a.wid)refund(a.wid);S.appts=S.appts.filter(x=>x.id!==id);closeSheet();render();toast(free&&a.wid?'İptal edildi · seans hakkın iade edildi':'Randevu iptal edildi')}
@@ -260,7 +266,7 @@ function proDetail(){
   h+=`</div><div class="wrap">`+(list.length?`<div class="slots">`+list.map(([t,v])=>{const x=v==='booked'||past(UI.pDay,t);return `<div class="slot ${x?'taken':''}" onclick="${x?'':`bookFromPro('${p.id}','${t}')`}">${t}</div>`}).join('')+'</div>':`<div class="card empty">${HOURS(dow(UI.pDay))?'Bu gün için açık saat yok.':'Pazar günleri kapalıyız.'}</div>`)+`<p class="note" style="padding:12px 2px">Boş bir saate dokun, hizmeti seç ve onayla.</p></div>`;
   return h;
 }
-function pickSvc(sv,pid,t){UI.flow={sv,pro:pid,day:UI.pDay,time:t,then:null};flowSheet()}
+function pickSvc(sv,pid,t){UI.flow={sv,pro:pid,day:UI.pDay,time:t,then:null,mode:'Yüz yüze'};flowSheet()}
 function bookFromPro(pid,t){const p=P(pid);if(p.sv.length===1)return pickSvc(p.sv[0],pid,t);
   openSheet(`<h3>${t} · Hizmet seç</h3><p class="mut" style="font-size:14px;margin-bottom:14px">${p.name} · ${fmtD(UI.pDay)}</p>`+p.sv.map(s=>`<div class="opt" onclick="pickSvc('${s}','${pid}','${t}')"><div class="pav" style="background:${SV[s].c};width:40px;height:40px;font-size:18px">${SV[s].i}</div><div><b style="font-size:14px">${SV[s].n}</b><div class="mut" style="font-size:12px">${SV[s].dur} dk · ${credit(s)?credit(s)+' seans hakkın var':'tek seans'}</div></div></div>`).join(''))}
 
